@@ -1,0 +1,6 @@
+- [ ] Remove buildCommands.sh
+- [ ] Add Jenkinsfile with pipeline
+- [ ] Add helm-templates to repo
+- [ ] Rename files
+- [ ] Validation of JSON test data _nice to have_
+- [ ] Jacoco contract test coverage _nice to have_
