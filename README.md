@@ -1,41 +1,16 @@
-# A template for a back-end service
+# records-of-processing-activities
+A service that provides functionality to register, modify, list and delete GDPR records of processing activities.
 
-## Requirements
+### Running tests locally
+`npm i && npm t`
 
-- docker
-- maven
-- jdk (openjdk-8-jdk)
+### Running locally (development)
+`npm i && npm start` 
 
-## To build and run locally
-
-Set environment variables
-
-```
-export SONAR_LOGIN=<obtain-key-from-sonar>
-export MONGO_USERNAME=<anything>
-export MONGO_PASSWORD=<anything>
-```
-
-Or you can put the variables in a .env file in the root directory of your project.
+### Environment Variables
 
 ```
-$ cat .env
-export SONAR_LOGIN=<obrain-key-from-sonar>
-MONGO_USERNAME=anything
-MONGO_PASSWORD=anything
+export MONGO_USERNAME
+export MONGO_PASSWORD
+export KEYCLOAK_AUTH_URL
 ```
-
-## Build and run
-
-```
-  mvn clean install
-  docker-compose up
-  curl -H "Accept: application/json" http://localhost:8080/version
-```
-
-## The API
-
-A nice way to understand what this API does, check the [specification](./src/main/resources/specification/a-backend-service.yaml)
-
-dbup: "docker-compose -f docker-compose-mongodb.yml up -d mongodb ",
-dbdown: "docker-compose -f docker-compose-mongodb.yml stop mongodb ",

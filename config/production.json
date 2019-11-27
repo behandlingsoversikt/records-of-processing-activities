@@ -1,0 +1,19 @@
+{
+  "server": {
+    "port": 8080
+  },
+  "mongodb": {
+    "host": "mongodb",
+    "port": 27017,
+    "name": "records-of-processing-activities"
+  },
+  "keycloak": {
+    "config": {
+      "realm": "fdk",
+      "bearer-only": true,
+      "ssl-required": "all",
+      "resource": "records-of-processing-activities",
+      "verify-token-audience": true
+    }
+  }
+}
