@@ -1,0 +1,11 @@
+{
+  "mongodb": {
+    "username": "MONGO_USERNAME",
+    "password": "MONGO_PASSWORD"
+  },
+  "keycloak": {
+    "config": {
+      "auth-server-url": "KEYCLOAK_AUTH_URL"
+    }
+  }
+}
