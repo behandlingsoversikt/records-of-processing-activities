@@ -1,0 +1,223 @@
+openapi: 3.0.2
+info:
+  title: GDPR Records
+  description: Exposes a basic service which hols the records of GDPR processing activities
+  version: '1.0'
+  termsOfService: 'https://fellesdatakatalog.brreg.no/about'
+  contact:
+    name: Brønnøysundregistrene
+    url: 'https://fellesdatakatalog.brreg.no'
+    email: fellesdatakatalog@brreg.no
+  license:
+    name: License of API
+    url: 'http://data.norge.no/nlod/no/2.0'
+externalDocs:
+  description: Dokumentasjon på Informasjonsforvaltning GitHub
+  url: https://informasjonsforvaltning.github.io/felles-datakatalog/datasett-katalog/api/
+tags:
+  - name: record
+    description: GDPR Record of Processing Activities
+servers:
+  - url: 'https://fellesdatakatalog.brreg.no/api'
+paths:
+  /records:
+    post:
+      tags:
+        - record
+      summary: Create a new data source
+      operationId: createRecord
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Relative location to the new data source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+    get:
+      tags:
+        - record
+      summary: Query for GDPR records.
+      description: Returns a collection of matching GDPR records
+      operationId: getRecords
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+  /records/{id}:
+    get:
+      tags:
+        - record
+      description: Get a specific GDPR record by id
+      operationId: getRecordById
+      parameters:
+        - in: path
+          name: id
+          description: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+    put:
+      tags:
+        - record
+      description: Patch a specific GDPR record by id
+      operationId: patchRecordById
+      parameters:
+        - in: path
+          name: id
+          description: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+    delete:
+      tags:
+        - record
+      description: Delete a specific GDPR record by id
+      operationId: deleteRecordById
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    Record:
+      type: object
+      description: A GDPR record of processing activities
+      properties:
+        purpose:
+          type: string
+          description: Purpose of processing data
+        registeredCategories:
+          type: array
+          description: //TODO
+          items:
+            type: string
+        personalDataCategories:
+          type: array
+          description: //TODO
+          items:
+            type: string
+        recipientCategories:
+          type: array
+          description: //TODO
+          items:
+            type: string
+        deleteDate:
+          type: string
+          format: date
+          description: Delete due this date
+        securityMeasures:
+          type: object
+          description: Description of organizational and technical security measures
+          properties:
+            organizational: 
+              type: string
+            technical:
+              type: string
+          required:
+            - organizational
+            - technical
+        dataProcessorContactDetails:
+          type: object
+          description: Contact details of the Data Processor
+          properties:
+            name: 
+              type: string
+            phone:
+              type: string
+            email:
+              type: string
+          required:
+            - name
+            - phone
+            - email
+        dataTransfers:
+          type: array
+          description: List of transfers of personal data to third countries or international organisations
+          items:
+            type: object
+            description: Third-party recipient entity
+            properties:
+              entityName:
+                type: string
+              entityType:
+                type: string
+                enum: 
+                  - GDPR-THIRD-COUNTRY 
+                  - GDPR-INTERNATIONAL-ORGANIZATION
+            required:
+              - thirdPartyName
+              - thirdPartyType
+        # non-mandatory for Datatilsynet
+        title:
+          type: string
+          description: Data Processing activity name/title
+        relatedDatasets:
+          type: array
+          items:
+            type: object
+            description: Related datasets' metadata
+            properties:
+              name:
+                type: string
+                description: Dataset name
+              id:
+                type: string
+                format: uuid
+            required:
+              - name
+              - id
+        dataProtectionImpactAssessment:
+          type: string
+          description: Optional link to Data Protection Impact Assessment (No DPIA if this field is empty)
+        dataProcessingAgreement:
+          type: string
+          description: Link to Data Processing Agreement
+      required:
+        # - purpose
+        # - title
+        
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+security:
+  - bearerAuth: []
