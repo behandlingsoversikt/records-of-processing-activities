@@ -1,6 +1,9 @@
-name: Deploy to it1 manually when request is sent
+name: Deploy to production when merging with master branch
 
-on:  [deployment]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -10,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build Docker image
-        run: docker build . -t records-of-processing-activities:latest -t eu.gcr.io/fdk-infra/records-of-processing-activities:it1_latest -t eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA
+        run: docker build . -t records-of-processing-activities:latest -t eu.gcr.io/fdk-infra/records-of-processing-activities:production_latest -t eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA
       - name: Connect to Google Cloud
         uses: actions-hub/gcloud@master
         env:
@@ -34,18 +37,18 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/records-of-processing-activities
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/it1.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/production.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
             cat ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
       - name: Get kubeconfig file from GKE
         uses: machine-learning-apps/gke-kubeconfig@master
         with:
-          application_credentials: ${{ secrets.FDK_DEV_AUTODEPLOY }}
+          application_credentials: ${{ secrets.FDK_PROD_AUTODEPLOY }}
           project_id: fdk-dev
           location_zone: europe-north1-a
           cluster_name: fdk-dev
-      - name: Deploy to it1
+      - name: Deploy to production
         uses: docker://bitnami/kubectl:latest
         env:
           KUBECONFIG: '/github/workspace/.kube/config'
