@@ -61,5 +61,4 @@ jobs:
         uses: peter-evans/repository-dispatch@master
         with:
           token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: Informasjonsforvaltning/records-of-processing-activities
           event-type: deploy-ut1
