@@ -1,4 +1,4 @@
-import { RecordDocument } from '../record.model';
+import { RecordDocument } from '../models/record';
 
 interface PagedResource {
   pageNumber: number;

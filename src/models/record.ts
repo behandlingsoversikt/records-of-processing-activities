@@ -2,7 +2,7 @@ import { Document, model, Schema } from 'mongoose';
 import pick from 'lodash/pick';
 import uuidv4 from 'uuid/v4';
 
-import { Record } from './types';
+import { Record } from '../types';
 
 export interface RecordDocument extends Document, Record {}
 
@@ -13,6 +13,11 @@ const recordSchemaDefinition = {
     required: true,
     unique: true
   },
+  organizationId: {
+    type: String,
+    ref: 'organization'
+  },
+  status: { type: String, default: null },
   title: { type: String, default: null },
   purpose: { type: String, default: null },
   dataProtectionImpactAssessment: { type: String, default: null },

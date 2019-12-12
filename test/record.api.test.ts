@@ -2,16 +2,17 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { Application } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { name, lorem, company, internet, random, date } from 'faker';
+import { name, lorem, company, internet, random, date, address } from 'faker';
 import { stub } from 'sinon';
 
 import { createApp } from '../src/app';
 import * as db from '../src/db/db';
-import keycloak from '../src/keycloak';
-import { RecordModel } from '../src/record.model';
-import { recordApiValidator, spec } from '../src/record.validator';
+import * as keycloak from '../src/keycloak';
+import { RecordModel } from '../src/models/record';
+import { apiValidator, spec } from '../src/validator';
 
-import { Record } from '../src/types';
+import { Record, ContactDetails } from '../src/types';
+import { OrganizationModel } from '../src/models/organization';
 
 const mongoTestServer = new MongoMemoryServer();
 
@@ -19,10 +20,23 @@ const uuidV4regExp = new RegExp(
   /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
 );
 
+const mockOrganizationId = random
+  .number({ min: 800_000_000, max: 999_999_999 })
+  .toString();
+
+const generateContactMock = (): ContactDetails => ({
+  name: name.findName(),
+  address: address.streetAddress(),
+  phone: random.number({ min: 20_00_00_00, max: 99_99_99_99 }).toString(),
+  email: internet.email()
+});
+
 const generateRecordMock = (): Record => {
   return {
     id: random.uuid(),
     purpose: lorem.sentence(),
+    status: 'DRAFT',
+    organizationId: mockOrganizationId,
     registeredCategories: lorem
       .words(random.number({ min: 1, max: 10 }))
       .split(' '),
@@ -58,17 +72,27 @@ const generateRecordMock = (): Record => {
 let app: Application;
 
 before(async () => {
-  stub(keycloak, 'protect').callsFake(
-    () =>
-      function middlewareMock(_req, _res, next) {
-        return next();
-      }
-  );
+  stub(
+    keycloak,
+    'enforceAuthority'
+  ).callsFake((_req: any, _res: any, next: any) => next());
+
+  stub(
+    keycloak,
+    'enforcePermissions'
+  ).callsFake((_req: any, _res: any, next: any) => next());
 
   const connectionUris: string = await mongoTestServer.getConnectionString();
   stub(db, 'getConnectionUris').callsFake(() => connectionUris);
 
   app = await createApp();
+
+  await new OrganizationModel({
+    id: mockOrganizationId,
+    dataControllerRepresentative: generateContactMock(),
+    dataControllerRepresentativeInEU: generateContactMock(),
+    dataProtectionOfficer: generateContactMock()
+  }).save();
 });
 
 afterEach(async () => {
@@ -77,12 +101,12 @@ afterEach(async () => {
 
 after(async () => {
   await mongoose.disconnect();
-  process.exit(0);
 });
 
-/* POST /api/records */
-describe('/api/records', () => {
-  const supportedMethods = spec.paths['/records'];
+/* POST /api/organizations/{organizationId}/records */
+describe('/api/organizations/{organizationId}/records', () => {
+  const supportedMethods =
+    spec.paths['/organizations/{organizationId}/records'];
 
   const {
     post: {
@@ -100,25 +124,35 @@ describe('/api/records', () => {
     const code = Object.keys(postResponses)[0];
 
     await request(app)
-      .post(`/api/records`)
+      .post(`/api/organizations/${mockOrganizationId}/records`)
       .send(generateRecordMock())
       .expect(parseInt(code))
       .expect('Location', uuidV4regExp)
-      .expect(recordApiValidator.validateResponse('post', '/records'));
+      .expect(
+        apiValidator.validateResponse(
+          'post',
+          '/organizations/{organizationId}/records'
+        )
+      );
   });
 
   it(getDescription || getSummary, async () => {
     const code = Object.keys(getResponses)[0];
 
     await request(app)
-      .get(`/api/records`)
+      .get(`/api/organizations/${mockOrganizationId}/records`)
       .expect(parseInt(code))
-      .expect(recordApiValidator.validateResponse('get', '/records'));
+      .expect(
+        apiValidator.validateResponse(
+          'get',
+          '/organizations/{organizationId}/records'
+        )
+      );
   });
 });
 
-describe('/api/records/{id}', () => {
-  const supportedMethods = spec.paths['/records/{id}'];
+describe('/api/records/{recordId}', () => {
+  const supportedMethods = spec.paths['/records/{recordId}'];
 
   let recordMock: any = {};
   beforeEach(async () => {
@@ -150,7 +184,7 @@ describe('/api/records/{id}', () => {
     await request(app)
       .delete(`/api/records/${recordMock.id}`)
       .expect(parseInt(code))
-      .expect(recordApiValidator.validateResponse('delete', '/records/{id}'));
+      .expect(apiValidator.validateResponse('delete', '/records/{recordId}'));
   });
 
   it(patchDescription || patchSummary, async () => {
@@ -160,7 +194,7 @@ describe('/api/records/{id}', () => {
       .patch(`/api/records/${recordMock.id}`)
       .send(recordMock)
       .expect(parseInt(code))
-      .expect(recordApiValidator.validateResponse('patch', '/records/{id}'));
+      .expect(apiValidator.validateResponse('patch', '/records/{recordId}'));
   });
 
   it(getDescription || getSummary, async () => {
@@ -169,6 +203,6 @@ describe('/api/records/{id}', () => {
     await request(app)
       .get(`/api/records/${recordMock.id}`)
       .expect(parseInt(code))
-      .expect(recordApiValidator.validateResponse('get', '/records/{id}'));
+      .expect(apiValidator.validateResponse('get', '/records/{recordId}'));
   });
 });

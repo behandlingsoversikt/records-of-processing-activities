@@ -2,10 +2,11 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-import { commonErrorHandler } from './lib/common-error-handler';
+import keycloak from './keycloak';
 import { connectDb } from './db/db';
 import { createRecordRouter } from './record.router';
-import keycloak from './keycloak';
+import { createOrganizationRouter } from './organization.router';
+import { commonErrorHandler } from './lib/common-error-handler';
 
 export async function createApp(): Promise<Application> {
   const app = express();
@@ -17,6 +18,7 @@ export async function createApp(): Promise<Application> {
   app.use(keycloak.middleware());
 
   app.use('/api', createRecordRouter());
+  app.use('/api/organizations', createOrganizationRouter());
 
   app.use(commonErrorHandler);
 

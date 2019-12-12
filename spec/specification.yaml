@@ -20,12 +20,62 @@ tags:
 servers:
   - url: 'https://records-of-processing-activities.fellesdatakatalog.brreg.no/api'
 paths:
-  /records:
+  /organizations/{organizationId}/representatives:
+    get:
+      tags:
+        - organization
+      summary: Gets the representatives of an organization
+      operationId: getRepresentatives
+      parameters:
+        - in: path
+          name: organizationId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Returns all registered representatives
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+    patch:
+      tags:
+        - organization
+      summary: Patches the representatives of an organization
+      operationId: patchRepresentatives
+      parameters:
+        - in: path
+          name: organizationId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+      responses:
+        '200':
+          description: Patches registered representatives
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+      
+  /organizations/{organizationId}/records:
     post:
       tags:
         - record
       summary: Create a new record
       operationId: createRecord
+      parameters: 
+        - in: path
+          name: organizationId
+          schema:
+            type: string
+          required: true
       responses:
         '201':
           description: Created
@@ -47,6 +97,11 @@ paths:
       description: Returns a collection of matching GDPR records
       operationId: getRecords
       parameters:
+        - name: organizationId
+          in: path
+          schema:
+            type: string
+          required: true
         - name: page
           in: query
           description: Specifies the page
@@ -66,7 +121,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResource'
-  /records/{id}:
+  /records/{recordId}:
     get:
       tags:
         - record
@@ -74,7 +129,7 @@ paths:
       operationId: getRecordById
       parameters:
         - in: path
-          name: id
+          name: recordId
           description: id
           required: true
           schema:
@@ -93,7 +148,7 @@ paths:
       operationId: patchRecordById
       parameters:
         - in: path
-          name: id
+          name: recordId
           description: id
           required: true
           schema:
@@ -117,7 +172,7 @@ paths:
       description: Delete a specific GDPR record by id
       operationId: deleteRecordById
       parameters:
-        - name: id
+        - name: recordId
           in: path
           description: id
           required: true
@@ -128,6 +183,30 @@ paths:
           description: No Content
 components:
   schemas:
+    Representative:
+      type: object
+      description: Representative contact information
+      properties:
+        name: 
+          type: string
+        phone:
+          type: string
+        email: 
+          type: string
+        address: 
+          type: string
+    Organization:
+      type: object
+      description: Contains the id and all the representatives of an organization
+      properties:
+        id:
+          type: string
+        dataControllerRepresentative:
+          $ref: "#/components/schemas/Representative"
+        dataControllerRepresentativeInEU:
+          $ref: "#/components/schemas/Representative"
+        dataProtectionOfficer:
+          $ref: "#/components/schemas/Representative" 
     PagedResource:
       type: object
       description: Paged resource containing a sublist of records of processing activities
@@ -155,6 +234,15 @@ components:
         id:
           type: string
           format: uuid
+        status:
+          type: string
+          enum: 
+            - DRAFT
+            - APPROVED
+            - PUBLISHED
+        organizationId:
+          type: string
+          description: ID of the organization this record belongs to
         purpose:
           type: string
           description: Purpose of processing data
