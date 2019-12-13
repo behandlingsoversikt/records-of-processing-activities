@@ -60,7 +60,7 @@ export interface Record {
     conducted?: boolean;
     assessmentReportUrl?: string;
   };
-  privacyProcessingSystems?: string; //
+  privacyProcessingSystems?: string;
   recipientCategories?: string;
   dataTransfers?: {
     transfered?: boolean;
@@ -88,4 +88,9 @@ export interface OrganizationResourceHandler {
   patchRepresentatives: RequestHandler;
   getRecordsByOrganizationId: RequestHandler;
   createRecord: RequestHandler;
+}
+
+export interface LivenessResourceHandler {
+  ping: RequestHandler;
+  ready: RequestHandler;
 }
