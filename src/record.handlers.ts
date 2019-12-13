@@ -4,7 +4,7 @@ import { RecordDocument, RecordModel } from './models/record';
 import { NotFoundHttpError } from './lib/http-error';
 import { elseThrow } from './lib/else-throw';
 
-import { ResourceHandler } from './types';
+import { RecordResourceHandler } from './types';
 
 export default {
   patchRecordById: (req, res, next): void => {
@@ -33,4 +33,4 @@ export default {
       })
       .catch(next);
   }
-} as ResourceHandler;
+} as RecordResourceHandler;

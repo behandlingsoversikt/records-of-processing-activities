@@ -183,9 +183,9 @@ paths:
           description: No Content
 components:
   schemas:
-    Representative:
+    ContactPoint:
+      description: Basic contact information
       type: object
-      description: Representative contact information
       properties:
         name: 
           type: string
@@ -193,8 +193,21 @@ components:
           type: string
         email: 
           type: string
-        address: 
+    Article:
+      type: object
+      properties:
+        checked:
+          type: boolean
+        referenceUrl:
           type: string
+    Representative:
+      allOf:
+        - $ref: "#/components/schemas/ContactPoint"
+        - type: object
+          description: Representative contact information
+          properties:
+            address: 
+              type: string
     Organization:
       type: object
       description: Contains the id and all the representatives of an organization
@@ -246,73 +259,114 @@ components:
         purpose:
           type: string
           description: Purpose of processing data
-        registeredCategories:
+        dataSubjectCategories:
           type: array
-          description: //TODO
+          description: En “registrert” er en identifiserbar fysisk person er en person som direkte eller indirekte kan identifiseres, særlig ved hjelp av en identifikator, jfr. Artikkel 4 nr. 1.
           items:
             type: string
         personalDataCategories:
           type: array
-          description: //TODO
+          description: «personopplysninger» er enhver opplysning om en identifisert eller identifiserbar fysisk person («den registrerte»), jfr. Artikkel 4 nr. 1.
           items:
             type: string
         recipientCategories:
-          type: array
-          description: //TODO
-          items:
-            type: string
-        deleteDate:
           type: string
-          format: date-time
-          description: Delete due this date
-        securityMeasures:
-          type: object
-          description: Description of organizational and technical security measures
-          properties:
-            organizational: 
-              type: string
-            technical:
-              type: string
-        dataProcessorContactDetails:
-          type: object
-          description: Contact details of the Data Processor
-          properties:
-            name: 
-              type: string
-            phone:
-              type: string
-            email:
-              type: string
-        dataTransfers:
+          description: En “mottaker” er en fysisk eller juridisk person, offentlig myndighet, institusjon eller ethvert annet organ som personopplysninger utleveres til, enten det dreier seg om en tredjepart eller ikke.
+        personalDataSubjects:
+          description: Kilder til opplysningene kan for eksempel være den registrerte selv, egen virksomhet, eller andre.
+          type: string
+        plannedDeletion:
+          type: string
+          description: For de forskjellige kategorier av personopplysninger, dersom mulig
+        highPrivacyRisk:
+          type: boolean
+          description: Gjør en vurdering av dette, blant annet med hensyn til eventuell gjennomføring av vurdering av personvernkonsekvenser (DPIA)
+        articleSixBasis:
           type: array
-          description: List of transfers of personal data to third countries or international organisations
+          description: Hvis behandlingen gjelder en rettslig forpliktelse, berettighet interesse mv. (c, e, eller f) kan du også henvise til annen lovgivning, dersom relevant.
           items:
             type: object
-            description: Third-party recipient entity
             properties:
-              entityName:
+              legality:
                 type: string
-              entityType:
+              referenceUrl:
                 type: string
-                enum: 
-                  - GDPR-THIRD-COUNTRY 
-                  - GDPR-INTERNATIONAL-ORGANIZATION
+        otherArticles:
+          type: object
+          description: Det må foreligge et særskilt grunnlag i tillegg til behandlingsgrunnlag for å behandle denne typen opplysninger. Skriv inn henvisning også til annen lovgivning, dersom relevant
+          properties:
+            articleNine:
+              $ref: "#/components/schemas/Article"
+            articleTen:
+              $ref: "#/components/schemas/Article"
+        businessArea:
+          type: array
+          description: Skriv inn hvilket overordnet funksjons-eller virksomhetsområde faller behandlingen under
+          items:
+            type: string
+        securityMeasures:
+          type: string
+          description: Generell beskrivelse av tekniske og organisatoriske sikkerhetstiltak
+        privacyProcessingSystems:
+          type: string
+          description: Skriv inn hvilke systemer som behandler opplysningene.
+        dataProcessorContactDetails:
+          $ref: "#/components/schemas/ContactPoint"
+        commonDataControllerContact:
+          type: object
+          description: Dersom to eller flere behandlingsansvarlige i fellesskap fastsetter formålene med og midlene for behandlingen, skal de være felles behandlingsansvarlige, jfr. Artikkel 26 nr 1.
+          properties:
+            companies:
+              type: string
+            distributionOfResponsibilities:
+              type: string
+            contactPoints:
+              type: array
+              items:
+                $ref: "#/components/schemas/ContactPoint"
+        dataTransfers:
+          type: object
+          description: Overføring av personopplysningene 
+          properties:
+            transfered:
+              type: boolean
+            thirdCountryRecipients:
+              description: Skriv inn navn på tredjeland eller internasjonale organisasjoner som personopplysninger overføres til, dersom relevant
+              type: string
+            guarantees:
+              description: Skriv inn nødvendige garantier ved overføring til tredjeland eller 
+              type: string
+            internationalOrganizations:
+              description: internasjonale organisasjoner, dersom relevant
+              type: string
         # non-mandatory for Datatilsynet
         title:
           type: string
           description: Data Processing activity name/title
         relatedDatasets:
-          description: List of related datasets' UUIDs
+          description: Dersom behandlingsaktiviteten kan knyttes til et datasett virksomheten forvalter, koble disse sammen. 
           type: array
           items:
             type: string
-            format: uuid
         dataProtectionImpactAssessment:
-          type: string
-          description: Optional link to Data Protection Impact Assessment (No DPIA if this field is empty)
+          type: object
+          description: Hvis du velger Ja, kan du vurdere å lenke til en vurdering av personvernkonsekvenser (DPIA).
+          properties:
+            conducted:
+              type: boolean
+            assessmentReportUrl:
+              type: string
         dataProcessingAgreement:
-          type: string
-          description: Link to Data Processing Agreement
+          type: array
+          items:
+            type: object
+            description: Skriv inn navn på databehandlere, dersom relevant. Her kan du også lenke til databehandleravtale.
+            properties:
+              dataProcessorName:
+                type: string
+              agreementUrl:
+                type: string
+
         
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme

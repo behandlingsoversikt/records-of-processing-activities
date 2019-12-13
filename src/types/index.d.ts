@@ -1,10 +1,23 @@
 import { RequestHandler } from 'express';
 
-export interface ContactDetails {
+interface ArticleSix {
+  legality?: string;
+  referenceUrl?: string;
+}
+
+interface Article {
+  checked?: boolean;
+  referenceUrl?: string;
+}
+
+export interface ContactPoint {
   name?: string;
-  address?: string;
   email?: string;
   phone?: string;
+}
+
+export interface ContactDetails extends ContactPoint {
+  address?: string;
 }
 
 export interface Record {
@@ -14,16 +27,47 @@ export interface Record {
   organizationId?: string;
   purpose?: string;
   title?: string;
-  dataProtectionImpactAssessment?: string;
-  dataProcessingAgreement?: string;
-  registeredCategories?: string[];
+  dataSubjectCategories?: string[];
+  articleSixBasis?: ArticleSix[];
+  otherArticles?: {
+    articleNine?: Article;
+    articleTen?: Article;
+  };
+  businessArea?: string[];
+  relatedDatasets?: string[];
+  dataProcessingAgreement?: [
+    {
+      dataProcessorName?: string;
+      agreementUrl?: string;
+    }
+  ];
+  dataProcessorContactDetails?: {
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+  commonDataControllerContact?: {
+    companies?: string;
+    distributionOfResponsibilities?: string;
+    contactPoints?: ContactPoint[];
+  };
   personalDataCategories?: string[];
-  recipientCategories?: string[];
-  dataTransfers?: any;
-  relatedDatasets?: any;
-  dataProcessorContactDetails?: any;
-  securityMeasures?: any;
-  deleteDate?: Date;
+  personalDataSubjects?: string;
+  securityMeasures?: string;
+  plannedDeletion?: string;
+  highPrivacyRisk?: boolean;
+  dataProtectionImpactAssessment?: {
+    conducted?: boolean;
+    assessmentReportUrl?: string;
+  };
+  privacyProcessingSystems?: string; //
+  recipientCategories?: string;
+  dataTransfers?: {
+    transfered?: boolean;
+    thirdCountryRecipients?: string;
+    guarantees?: string;
+    internationalOrganizations?: string;
+  };
 }
 
 export interface Organization {
@@ -33,12 +77,15 @@ export interface Organization {
   dataProtectionOfficer?: ContactDetails;
 }
 
-export interface ResourceHandler {
-  getRepresentatives: RequestHandler;
-  patchRepresentatives: RequestHandler;
-  createRecord: RequestHandler;
-  getRecordById: RequestHandler;
-  getRecordsByOrganizationId: RequestHandler;
+export interface RecordResourceHandler {
   patchRecordById: RequestHandler;
   deleteRecordById: RequestHandler;
+  getRecordById: RequestHandler;
+}
+
+export interface OrganizationResourceHandler {
+  getRepresentatives: RequestHandler;
+  patchRepresentatives: RequestHandler;
+  getRecordsByOrganizationId: RequestHandler;
+  createRecord: RequestHandler;
 }

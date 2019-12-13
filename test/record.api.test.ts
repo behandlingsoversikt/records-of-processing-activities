@@ -4,6 +4,7 @@ import { Application } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { name, lorem, company, internet, random, date, address } from 'faker';
 import { stub } from 'sinon';
+import { expect } from 'chai';
 
 import { createApp } from '../src/app';
 import * as db from '../src/db/db';
@@ -37,35 +38,73 @@ const generateRecordMock = (): Record => {
     purpose: lorem.sentence(),
     status: 'DRAFT',
     organizationId: mockOrganizationId,
-    registeredCategories: lorem
+    dataSubjectCategories: lorem
       .words(random.number({ min: 1, max: 10 }))
       .split(' '),
     personalDataCategories: lorem
       .words(random.number({ min: 1, max: 10 }))
       .split(' '),
-    recipientCategories: [random.uuid()],
-    deleteDate: date.future(),
-    securityMeasures: {
-      organizational: lorem.sentence(),
-      technical: lorem.sentence()
+    articleSixBasis: [
+      { legality: lorem.sentence(), referenceUrl: internet.url() },
+      { legality: lorem.sentence(), referenceUrl: internet.url() },
+      { legality: lorem.sentence(), referenceUrl: internet.url() }
+    ],
+    otherArticles: {
+      articleNine: {
+        checked: false
+      },
+      articleTen: {
+        checked: true,
+        referenceUrl: internet.url()
+      }
+    },
+    businessArea: [lorem.word(), lorem.word()],
+    recipientCategories: lorem.words(),
+    plannedDeletion: `${lorem.paragraph()} Planned deletion set due ${date.future()}`,
+    securityMeasures: lorem.sentence(),
+    commonDataControllerContact: {
+      companies: `${company.companyName()} AS`,
+      distributionOfResponsibilities: lorem.paragraph(),
+      contactPoints: [
+        {
+          name: name.findName(),
+          phone: random
+            .number({ min: 20_00_00_00, max: 99_99_99_99 })
+            .toString(),
+          email: internet.email()
+        },
+        {
+          name: name.findName(),
+          phone: random
+            .number({ min: 20_00_00_00, max: 99_99_99_99 })
+            .toString(),
+          email: internet.email()
+        }
+      ]
     },
     dataProcessorContactDetails: {
       name: name.findName(),
       phone: random.number({ min: 20_00_00_00, max: 99_99_99_99 }).toString(),
       email: internet.email()
     },
-    dataTransfers: [
-      {
-        entityName: `${company.companyName()} AS`,
-        entityType: random.boolean
-          ? 'GDPR-THIRD-COUNTRY'
-          : 'GDPR-INTERNATIONAL-ORGANIZATION'
-      }
-    ],
+    dataTransfers: {
+      transfered: true,
+      thirdCountryRecipients: `${company.companyName()} LLC`,
+      guarantees: lorem.paragraph(),
+      internationalOrganizations: `${company.companyName()} LLC`
+    },
     title: lorem.sentence(),
     relatedDatasets: [random.uuid()],
-    dataProtectionImpactAssessment: internet.url(),
-    dataProcessingAgreement: internet.url()
+    dataProtectionImpactAssessment: {
+      conducted: true,
+      assessmentReportUrl: internet.url()
+    },
+    dataProcessingAgreement: [
+      {
+        dataProcessorName: name.findName(),
+        agreementUrl: internet.url()
+      }
+    ]
   };
 };
 
@@ -190,11 +229,13 @@ describe('/api/records/{recordId}', () => {
   it(patchDescription || patchSummary, async () => {
     const code = Object.keys(patchResponses)[0];
 
-    await request(app)
+    const { body } = await request(app)
       .patch(`/api/records/${recordMock.id}`)
       .send(recordMock)
       .expect(parseInt(code))
       .expect(apiValidator.validateResponse('patch', '/records/{recordId}'));
+
+    expect(body).to.deep.equal(recordMock);
   });
 
   it(getDescription || getSummary, async () => {

@@ -6,7 +6,7 @@ import { elseThrow } from './lib/else-throw';
 import { toPagedResource } from './lib/paginate';
 import { OrganizationDocument, OrganizationModel } from './models/organization';
 
-import { ResourceHandler } from './types';
+import { OrganizationResourceHandler } from './types';
 
 export default {
   getRecordsByOrganizationId: async (req, res, next): Promise<void> => {
@@ -35,17 +35,18 @@ export default {
     OrganizationModel.findOne(
       { id: organizationId },
       {
-        new: true
+        new: true,
+        upsert: true
       }
     )
       .then(elseThrow<OrganizationDocument>(() => new NotFoundHttpError()))
       .then(() => {
-        new RecordModel({ ...data, organizationId }).save().then(({ id }) => {
+        new RecordModel({ ...data, organizationId }).save().then(({ id }) =>
           res
             .location(id)
             .status(201)
-            .send();
-        });
+            .send()
+        );
       })
       .catch(next);
   },
@@ -61,7 +62,7 @@ export default {
 
   patchRepresentatives: (req, res, next): void => {
     const { organizationId } = req.params;
-    const data = req.body;
+    const data = omit(req.body, 'id');
     OrganizationModel.findOneAndUpdate({ id: organizationId }, data, {
       new: true,
       upsert: true
@@ -69,4 +70,4 @@ export default {
       .then(doc => res.status(200).send(doc.toObject()))
       .catch(next);
   }
-} as ResourceHandler;
+} as OrganizationResourceHandler;

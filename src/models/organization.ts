@@ -12,9 +12,9 @@ const organizationSchemaDefinition = {
     unique: true
   },
 
-  dataControllerRepresentative: { type: Map, default: null },
-  dataControllerRepresentativeInEU: { type: Map, default: null },
-  dataProtectionOfficer: { type: Map, default: null }
+  dataControllerRepresentative: { type: Map, default: {} },
+  dataControllerRepresentativeInEU: { type: Map, default: {} },
+  dataProtectionOfficer: { type: Map, default: {} }
 };
 
 const organizationFromDocument = (

@@ -19,16 +19,16 @@ export const createRecordRouter = (): Router => {
 
   recordRouter.patch(
     `${recordsPath}/:recordId`,
-    // enforceAuthority,
-    // enforcePermissions,
+    enforceAuthority,
+    enforcePermissions,
     apiValidator.validate('patch', validationPath),
     recordHandlers.patchRecordById
   );
 
   recordRouter.delete(
     `${recordsPath}/:recordId`,
-    // enforceAuthority,
-    // enforcePermissions,
+    enforceAuthority,
+    enforcePermissions,
     apiValidator.validate('delete', validationPath),
     recordHandlers.deleteRecordById
   );
