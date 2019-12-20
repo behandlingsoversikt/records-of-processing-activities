@@ -17,7 +17,6 @@
       "ssl-required": "external",
       "resource": "records-of-processing-activities",
       "verify-token-audience": true
-    },
-    "allowed-authority": "system:root:admin"
+    }
   }
 }
