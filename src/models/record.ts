@@ -49,7 +49,7 @@ const recordSchemaDefinition = {
   },
 
   // Funksjonsområde
-  businessArea: [String],
+  businessAreas: [String],
   // Tilhørende datasett
   relatedDatasets: [String],
 
@@ -107,10 +107,9 @@ const recordSchemaDefinition = {
   recipientCategories: String,
   // Overføres opplysninger til tredjeland?
   dataTransfers: {
-    transfered: Boolean,
+    transferred: Boolean,
     thirdCountryRecipients: String,
-    guarantees: String,
-    internationalOrganizations: String
+    guarantees: String
   }
 };
 

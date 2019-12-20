@@ -58,7 +58,7 @@ const generateRecordMock = (): Record => {
         referenceUrl: internet.url()
       }
     },
-    businessArea: [lorem.word(), lorem.word()],
+    businessAreas: [lorem.word(), lorem.word()],
     recipientCategories: lorem.words(),
     plannedDeletion: `${lorem.paragraph()} Planned deletion set due ${date.future()}`,
     securityMeasures: lorem.sentence(),
@@ -88,10 +88,9 @@ const generateRecordMock = (): Record => {
       email: internet.email()
     },
     dataTransfers: {
-      transfered: true,
+      transferred: true,
       thirdCountryRecipients: `${company.companyName()} LLC`,
-      guarantees: lorem.paragraph(),
-      internationalOrganizations: `${company.companyName()} LLC`
+      guarantees: lorem.paragraph()
     },
     title: lorem.sentence(),
     relatedDatasets: [random.uuid()],

@@ -299,7 +299,7 @@ components:
               $ref: "#/components/schemas/Article"
             articleTen:
               $ref: "#/components/schemas/Article"
-        businessArea:
+        businessAreas:
           type: array
           description: Skriv inn hvilket overordnet funksjons-eller virksomhetsområde faller behandlingen under
           items:
@@ -328,16 +328,13 @@ components:
           type: object
           description: Overføring av personopplysningene 
           properties:
-            transfered:
+            transferred:
               type: boolean
             thirdCountryRecipients:
               description: Skriv inn navn på tredjeland eller internasjonale organisasjoner som personopplysninger overføres til, dersom relevant
               type: string
             guarantees:
-              description: Skriv inn nødvendige garantier ved overføring til tredjeland eller 
-              type: string
-            internationalOrganizations:
-              description: internasjonale organisasjoner, dersom relevant
+              description: Skriv inn nødvendige garantier ved overføring til tredjeland eller internasjonale organisasjoner, dersom relevant
               type: string
         # non-mandatory for Datatilsynet
         title:
