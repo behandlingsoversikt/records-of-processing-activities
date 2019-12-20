@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import recordHandlers from './record.handlers';
-import { enforceAuthority, enforcePermissions } from './keycloak';
+import { enforcePermissions } from './keycloak';
 import { apiValidator } from './validator';
 
 const recordsPath = '/records';
@@ -11,7 +11,6 @@ export const createRecordRouter = (): Router => {
 
   recordRouter.get(
     `${recordsPath}/:recordId`,
-    enforceAuthority,
     enforcePermissions,
     apiValidator.validate('get', validationPath),
     recordHandlers.getRecordById
@@ -19,7 +18,6 @@ export const createRecordRouter = (): Router => {
 
   recordRouter.patch(
     `${recordsPath}/:recordId`,
-    enforceAuthority,
     enforcePermissions,
     apiValidator.validate('patch', validationPath),
     recordHandlers.patchRecordById
@@ -27,7 +25,6 @@ export const createRecordRouter = (): Router => {
 
   recordRouter.delete(
     `${recordsPath}/:recordId`,
-    enforceAuthority,
     enforcePermissions,
     apiValidator.validate('delete', validationPath),
     recordHandlers.deleteRecordById

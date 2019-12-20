@@ -113,11 +113,6 @@ let app: Application;
 before(async () => {
   stub(
     keycloak,
-    'enforceAuthority'
-  ).callsFake((_req: any, _res: any, next: any) => next());
-
-  stub(
-    keycloak,
     'enforcePermissions'
   ).callsFake((_req: any, _res: any, next: any) => next());
 
