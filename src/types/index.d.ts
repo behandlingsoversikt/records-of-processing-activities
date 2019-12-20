@@ -33,7 +33,7 @@ export interface Record {
     articleNine?: Article;
     articleTen?: Article;
   };
-  businessArea?: string[];
+  businessAreas?: string[];
   relatedDatasets?: string[];
   dataProcessingAgreement?: [
     {
@@ -63,10 +63,9 @@ export interface Record {
   privacyProcessingSystems?: string;
   recipientCategories?: string;
   dataTransfers?: {
-    transfered?: boolean;
+    transferred?: boolean;
     thirdCountryRecipients?: string;
     guarantees?: string;
-    internationalOrganizations?: string;
   };
 }
 
