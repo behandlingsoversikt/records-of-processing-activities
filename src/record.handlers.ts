@@ -1,5 +1,3 @@
-import omit from 'lodash/omit';
-
 import { RecordDocument, RecordModel } from './models/record';
 import { NotFoundHttpError } from './lib/http-error';
 import { elseThrow } from './lib/else-throw';
@@ -7,15 +5,6 @@ import { elseThrow } from './lib/else-throw';
 import { RecordResourceHandler } from './types';
 
 export default {
-  patchRecordById: (req, res, next): void => {
-    const { recordId } = req.params;
-    const data = omit(req.body, 'id');
-    RecordModel.findOneAndUpdate({ id: recordId }, data, { new: true })
-      .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
-      .then(doc => res.status(200).send(doc.toObject()))
-      .catch(next);
-  },
-
   getRecordById: (req, res, next): void => {
     const { recordId } = req.params;
     RecordModel.findOne({ id: recordId })
