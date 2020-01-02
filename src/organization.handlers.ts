@@ -1,4 +1,5 @@
 import omit from 'lodash/omit';
+import uuidv4 from 'uuid/v4';
 
 import { RecordDocument, RecordModel } from './models/record';
 import { NotFoundHttpError } from './lib/http-error';
@@ -9,6 +10,21 @@ import { OrganizationDocument, OrganizationModel } from './models/organization';
 import { OrganizationResourceHandler } from './types';
 
 export default {
+  patchRecordById: (req, res, next): void => {
+    const { recordId = uuidv4() } = req.params;
+
+    const data = omit(req.body, 'id');
+
+    RecordModel.findOneAndUpdate({ id: recordId }, data, {
+      upsert: true,
+      new: true,
+      setDefaultsOnInsert: true
+    })
+      .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
+      .then(doc => res.status(200).send(doc.toObject()))
+      .catch(next);
+  },
+
   getRecordsByOrganizationId: async (req, res, next): Promise<void> => {
     const page = +req.query.page || 1;
     const limit = +req.query.limit || 10;
@@ -65,7 +81,8 @@ export default {
     const data = omit(req.body, 'id');
     OrganizationModel.findOneAndUpdate({ id: organizationId }, data, {
       new: true,
-      upsert: true
+      upsert: true,
+      setDefaultsOnInsert: true
     })
       .then(doc => res.status(200).send(doc.toObject()))
       .catch(next);

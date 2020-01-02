@@ -61,7 +61,7 @@ export interface Record {
     assessmentReportUrl?: string;
   };
   privacyProcessingSystems?: string;
-  recipientCategories?: string;
+  recipientCategories?: string[];
   dataTransfers?: {
     transferred?: boolean;
     thirdCountryRecipients?: string;
@@ -77,12 +77,12 @@ export interface Organization {
 }
 
 export interface RecordResourceHandler {
-  patchRecordById: RequestHandler;
   deleteRecordById: RequestHandler;
   getRecordById: RequestHandler;
 }
 
 export interface OrganizationResourceHandler {
+  patchRecordById: RequestHandler;
   getRepresentatives: RequestHandler;
   patchRepresentatives: RequestHandler;
   getRecordsByOrganizationId: RequestHandler;

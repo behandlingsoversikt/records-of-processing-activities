@@ -59,7 +59,7 @@ const generateRecordMock = (): Record => {
       }
     },
     businessAreas: [lorem.word(), lorem.word()],
-    recipientCategories: lorem.words(),
+    recipientCategories: [lorem.words()],
     plannedDeletion: `${lorem.paragraph()} Planned deletion set due ${date.future()}`,
     securityMeasures: lorem.sentence(),
     commonDataControllerContact: {
@@ -138,6 +138,12 @@ after(async () => {
 
 /* POST /api/organizations/{organizationId}/records */
 describe('/api/organizations/{organizationId}/records', () => {
+  let recordMock: any = {};
+  beforeEach(async () => {
+    recordMock = generateRecordMock();
+    await new RecordModel(recordMock).save();
+  });
+
   const supportedMethods =
     spec.paths['/organizations/{organizationId}/records'];
 
@@ -146,6 +152,11 @@ describe('/api/organizations/{organizationId}/records', () => {
       description: postDescription,
       summary: postSummary,
       responses: postResponses
+    } = {} as any,
+    patch: {
+      description: patchDescription,
+      summary: patchSummary,
+      responses: patchResponses
     } = {} as any,
     get: {
       description: getDescription,
@@ -167,6 +178,25 @@ describe('/api/organizations/{organizationId}/records', () => {
           '/organizations/{organizationId}/records'
         )
       );
+  });
+
+  it(patchDescription || patchSummary, async () => {
+    const code = Object.keys(patchResponses)[0];
+
+    const { body } = await request(app)
+      .patch(
+        `/api/organizations/${mockOrganizationId}/records/${recordMock.id}`
+      )
+      .send(recordMock)
+      .expect(parseInt(code))
+      .expect(
+        apiValidator.validateResponse(
+          'patch',
+          '/organizations/{organizationId}/records'
+        )
+      );
+
+    expect(body).to.deep.equal(recordMock);
   });
 
   it(getDescription || getSummary, async () => {
@@ -199,11 +229,6 @@ describe('/api/records/{recordId}', () => {
       summary: getSummary,
       responses: getResponses
     } = {} as any,
-    patch: {
-      description: patchDescription,
-      summary: patchSummary,
-      responses: patchResponses
-    } = {} as any,
     delete: {
       description: deleteDescription,
       summary: deleteSummary,
@@ -218,18 +243,6 @@ describe('/api/records/{recordId}', () => {
       .delete(`/api/records/${recordMock.id}`)
       .expect(parseInt(code))
       .expect(apiValidator.validateResponse('delete', '/records/{recordId}'));
-  });
-
-  it(patchDescription || patchSummary, async () => {
-    const code = Object.keys(patchResponses)[0];
-
-    const { body } = await request(app)
-      .patch(`/api/records/${recordMock.id}`)
-      .send(recordMock)
-      .expect(parseInt(code))
-      .expect(apiValidator.validateResponse('patch', '/records/{recordId}'));
-
-    expect(body).to.deep.equal(recordMock);
   });
 
   it(getDescription || getSummary, async () => {

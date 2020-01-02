@@ -104,7 +104,7 @@ const recordSchemaDefinition = {
   // Systemer i din virksomhet som behandler personopplysningene
   privacyProcessingSystems: String,
   // Kategorier av mottakere
-  recipientCategories: String,
+  recipientCategories: [String],
   // Overføres opplysninger til tredjeland?
   dataTransfers: {
     transferred: Boolean,

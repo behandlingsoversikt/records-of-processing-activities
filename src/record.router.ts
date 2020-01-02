@@ -9,25 +9,18 @@ const validationPath = `${recordsPath}/{recordId}`;
 export const createRecordRouter = (): Router => {
   const recordRouter = Router();
 
-  recordRouter.get(
-    `${recordsPath}/:recordId`,
-    enforcePermissions,
-    apiValidator.validate('get', validationPath),
-    recordHandlers.getRecordById
-  );
-
-  recordRouter.patch(
-    `${recordsPath}/:recordId`,
-    enforcePermissions,
-    apiValidator.validate('patch', validationPath),
-    recordHandlers.patchRecordById
-  );
-
   recordRouter.delete(
     `${recordsPath}/:recordId`,
     enforcePermissions,
     apiValidator.validate('delete', validationPath),
     recordHandlers.deleteRecordById
+  );
+
+  recordRouter.get(
+    `${recordsPath}/:recordId`,
+    enforcePermissions,
+    apiValidator.validate('get', validationPath),
+    recordHandlers.getRecordById
   );
 
   return recordRouter;

@@ -65,6 +65,30 @@ paths:
                 $ref: '#/components/schemas/Organization'
       
   /organizations/{organizationId}/records:
+    patch:
+      tags:
+        - record
+      description: Patch a specific GDPR record by id
+      operationId: patchRecordById
+      parameters:
+        - in: path
+          name: organizationId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
     post:
       tags:
         - record
@@ -141,31 +165,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Record'
-    patch:
-      tags:
-        - record
-      description: Patch a specific GDPR record by id
-      operationId: patchRecordById
-      parameters:
-        - in: path
-          name: recordId
-          description: id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Record'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Record'
     delete:
       tags:
         - record
@@ -270,7 +269,9 @@ components:
           items:
             type: string
         recipientCategories:
-          type: string
+          type: array
+          items:
+            type: string
           description: En “mottaker” er en fysisk eller juridisk person, offentlig myndighet, institusjon eller ethvert annet organ som personopplysninger utleveres til, enten det dreier seg om en tredjepart eller ikke.
         personalDataSubjects:
           description: Kilder til opplysningene kan for eksempel være den registrerte selv, egen virksomhet, eller andre.

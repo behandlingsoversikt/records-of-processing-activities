@@ -34,5 +34,12 @@ export const createOrganizationRouter = (): Router => {
     organizationHandlers.createRecord
   );
 
+  organizationRouter.patch(
+    `/:organizationId${recordsPath}/:recordId?`,
+    enforcePermissions,
+    apiValidator.validate('patch', validationPath),
+    organizationHandlers.patchRecordById
+  );
+
   return organizationRouter;
 };
