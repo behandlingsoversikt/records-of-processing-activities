@@ -54,7 +54,7 @@ const recordSchemaDefinition = {
   relatedDatasets: [String],
 
   // Databehandlere og databehandleravtaler
-  dataProcessingAgreement: {
+  dataProcessingAgreements: {
     type: [
       {
         _id: false,

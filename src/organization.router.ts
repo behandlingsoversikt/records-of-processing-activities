@@ -41,5 +41,19 @@ export const createOrganizationRouter = (): Router => {
     organizationHandlers.patchRecordById
   );
 
+  organizationRouter.delete(
+    `/:organizationId${recordsPath}/:recordId`,
+    enforcePermissions,
+    apiValidator.validate('delete', `${validationPath}/{recordId}`),
+    organizationHandlers.deleteRecordById
+  );
+
+  organizationRouter.get(
+    `/:organizationId${recordsPath}/:recordId`,
+    enforcePermissions,
+    apiValidator.validate('get', `${validationPath}/{recordId}`),
+    organizationHandlers.getRecordById
+  );
+
   return organizationRouter;
 };

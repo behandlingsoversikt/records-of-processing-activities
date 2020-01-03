@@ -35,7 +35,7 @@ export interface Record {
   };
   businessAreas?: string[];
   relatedDatasets?: string[];
-  dataProcessingAgreement?: [
+  dataProcessingAgreements?: [
     {
       dataProcessorName?: string;
       agreementUrl?: string;
@@ -76,12 +76,9 @@ export interface Organization {
   dataProtectionOfficer?: ContactDetails;
 }
 
-export interface RecordResourceHandler {
+export interface OrganizationResourceHandler {
   deleteRecordById: RequestHandler;
   getRecordById: RequestHandler;
-}
-
-export interface OrganizationResourceHandler {
   patchRecordById: RequestHandler;
   getRepresentatives: RequestHandler;
   patchRepresentatives: RequestHandler;

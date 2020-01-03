@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 
 import keycloak from './keycloak';
 import { connectDb } from './db/db';
-import { createRecordRouter } from './record.router';
 import { createOrganizationRouter } from './organization.router';
 import { commonErrorHandler } from './lib/common-error-handler';
 import { createLivenessRouter } from './liveness.router';
@@ -19,7 +18,6 @@ export async function createApp(): Promise<Application> {
   app.use(keycloak.middleware());
 
   app.use('/', createLivenessRouter());
-  app.use('/api', createRecordRouter());
   app.use('/api/organizations', createOrganizationRouter());
 
   app.use(commonErrorHandler);
