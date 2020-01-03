@@ -3,6 +3,7 @@ import pick from 'lodash/pick';
 import uuidv4 from 'uuid/v4';
 
 import { Record } from '../types';
+import { RecordStatus } from '../types/enums';
 
 export interface RecordDocument extends Document, Record {}
 
@@ -17,7 +18,7 @@ const recordSchemaDefinition = {
     type: String,
     ref: 'organization'
   },
-  status: { type: String },
+  status: { type: String, default: RecordStatus.DRAFT },
 
   // Behandlingen gjelder
   title: { type: String },

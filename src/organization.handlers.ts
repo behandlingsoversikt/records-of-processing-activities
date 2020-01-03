@@ -35,7 +35,8 @@ export default {
 
     RecordModel.findOneAndUpdate({ id: recordId }, data, {
       upsert: true,
-      new: true
+      new: true,
+      setDefaultsOnInsert: true
     })
       .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
       .then(doc => res.status(200).send(doc.toObject()))
