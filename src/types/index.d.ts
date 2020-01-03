@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { RecordStatus } from './enums';
 
 interface ArticleSix {
   legality?: string;
@@ -23,7 +24,7 @@ export interface ContactDetails extends ContactPoint {
 export interface Record {
   // set to any because of mongoose type compatibility, in reality it is string
   id?: any;
-  status?: 'APPROVED' | 'DRAFT' | 'PUBLISHED';
+  status?: RecordStatus;
   organizationId?: string;
   purpose?: string;
   title?: string;

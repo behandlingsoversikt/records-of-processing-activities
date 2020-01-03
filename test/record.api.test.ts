@@ -14,6 +14,7 @@ import { apiValidator, spec } from '../src/validator';
 
 import { Record, ContactDetails } from '../src/types';
 import { OrganizationModel } from '../src/models/organization';
+import { RecordStatus } from '../src/types/enums';
 
 const mongoTestServer = new MongoMemoryServer();
 
@@ -36,7 +37,7 @@ const generateRecordMock = (): Record => {
   return {
     id: random.uuid(),
     purpose: lorem.sentence(),
-    status: 'DRAFT',
+    status: RecordStatus.DRAFT,
     organizationId: mockOrganizationId,
     dataSubjectCategories: lorem
       .words(random.number({ min: 1, max: 10 }))
