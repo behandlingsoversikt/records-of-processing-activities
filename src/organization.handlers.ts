@@ -51,7 +51,9 @@ export default {
 
     try {
       const docs = await RecordModel.find({ organizationId })
-        .select('id title status dataProcessorContactDetails.name')
+        .select(
+          'id organizationId title status dataProcessorContactDetails.name'
+        )
         .skip(limit * page - limit)
         .limit(limit);
 
