@@ -98,7 +98,7 @@ const generateRecordMock = (): Record => {
       conducted: true,
       assessmentReportUrl: internet.url()
     },
-    dataProcessingAgreement: [
+    dataProcessingAgreements: [
       {
         dataProcessorName: name.findName(),
         agreementUrl: internet.url()
@@ -214,8 +214,9 @@ describe('/api/organizations/{organizationId}/records', () => {
   });
 });
 
-describe('/api/records/{recordId}', () => {
-  const supportedMethods = spec.paths['/records/{recordId}'];
+describe('/api/organizations/{organizationId}/records/{recordId}', () => {
+  const supportedMethods =
+    spec.paths['/organizations/{organizationId}/records/{recordId}'];
 
   let recordMock: any = {};
   beforeEach(async () => {
@@ -240,17 +241,29 @@ describe('/api/records/{recordId}', () => {
     const code = Object.keys(deleteResponses)[0];
 
     await request(app)
-      .delete(`/api/records/${recordMock.id}`)
+      .delete(
+        `/api/organizations/${mockOrganizationId}/records/${recordMock.id}`
+      )
       .expect(parseInt(code))
-      .expect(apiValidator.validateResponse('delete', '/records/{recordId}'));
+      .expect(
+        apiValidator.validateResponse(
+          'delete',
+          '/organizations/{organizationId}/records/{recordId}'
+        )
+      );
   });
 
   it(getDescription || getSummary, async () => {
     const code = Object.keys(getResponses)[0];
 
     await request(app)
-      .get(`/api/records/${recordMock.id}`)
+      .get(`/api/organizations/${mockOrganizationId}/records/${recordMock.id}`)
       .expect(parseInt(code))
-      .expect(apiValidator.validateResponse('get', '/records/{recordId}'));
+      .expect(
+        apiValidator.validateResponse(
+          'get',
+          '/organizations/{organizationId}/records/{recordId}'
+        )
+      );
   });
 });

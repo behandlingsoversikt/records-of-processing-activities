@@ -10,6 +10,24 @@ import { OrganizationDocument, OrganizationModel } from './models/organization';
 import { OrganizationResourceHandler } from './types';
 
 export default {
+  getRecordById: (req, res, next): void => {
+    const { recordId } = req.params;
+    RecordModel.findOne({ id: recordId })
+      .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
+      .then(doc => res.status(200).send(doc.toObject()))
+      .catch(next);
+  },
+
+  deleteRecordById: (req, res, next): void => {
+    const { recordId } = req.params;
+    RecordModel.deleteOne({ id: recordId })
+      .then(({ deletedCount }) => {
+        const status = deletedCount ? 204 : 404;
+        res.status(status).send();
+      })
+      .catch(next);
+  },
+
   patchRecordById: (req, res, next): void => {
     const { recordId = uuidv4() } = req.params;
 
@@ -17,8 +35,7 @@ export default {
 
     RecordModel.findOneAndUpdate({ id: recordId }, data, {
       upsert: true,
-      new: true,
-      setDefaultsOnInsert: true
+      new: true
     })
       .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
       .then(doc => res.status(200).send(doc.toObject()))
