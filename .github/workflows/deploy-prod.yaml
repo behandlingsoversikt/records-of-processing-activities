@@ -24,7 +24,7 @@ jobs:
 
 
       - name: Build Docker image with GitHub commit sha and staging tag
-        run: docker build . -t eu.gcr.io/fdk-infra/sso:$GITHUB_SHA -t eu.gcr.io/fdk-infra/records-of-processing-activities:latest
+        run: docker build . -t eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA -t eu.gcr.io/fdk-infra/records-of-processing-activities:latest
 
       - name: Publish docker image to Google Cloud
         run: docker -- push eu.gcr.io/fdk-infra/records-of-processing-activities
