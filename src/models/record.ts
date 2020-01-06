@@ -101,7 +101,8 @@ const recordSchemaDefinition = {
   },
   // Kilder til personopplysninger
   personalDataSubjects: String,
-
+  // sist oppdatert
+  updatedAt: Date,
   // Systemer i din virksomhet som behandler personopplysningene
   privacyProcessingSystems: String,
   // Kategorier av mottakere
