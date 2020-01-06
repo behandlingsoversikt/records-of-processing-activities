@@ -24,7 +24,7 @@ jobs:
 
 
       - name: Build Docker image with GitHub commit sha and staging tag
-        run: docker build . -t eu.gcr.io/fdk-infra/records-of-processing-activities:latest
+        run: docker build . -t eu.gcr.io/fdk-infra/sso:$GITHUB_SHA -t eu.gcr.io/fdk-infra/records-of-processing-activities:latest
 
       - name: Publish docker image to Google Cloud
         run: docker -- push eu.gcr.io/fdk-infra/records-of-processing-activities
@@ -37,7 +37,7 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/records-of-processing-activities
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/records-of-processing-activities:latest" -f ./helm/records-of-processing-activities/values/production.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/production.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
             cat ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
@@ -62,3 +62,4 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH_TOKEN }}
           event-type: deploy-demo
+          client-payload: '{"sha": "${{ github.sha }}"}'
