@@ -263,7 +263,6 @@ components:
           enum: 
             - DRAFT
             - APPROVED
-            - PUBLISHED
         organizationId:
           type: string
           description: ID of the organization this record belongs to

@@ -68,6 +68,7 @@ export interface Record {
     thirdCountryRecipients?: string;
     guarantees?: string;
   };
+  updatedAt?: Date;
 }
 
 export interface Organization {
