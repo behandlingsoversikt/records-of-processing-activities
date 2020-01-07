@@ -30,7 +30,6 @@ export default {
 
   patchRecordById: (req, res, next): void => {
     const { recordId = uuidv4() } = req.params;
-
     const data = omit(req.body, 'id');
 
     RecordModel.findOneAndUpdate({ id: recordId }, data, {
