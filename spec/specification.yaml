@@ -18,9 +18,9 @@ tags:
   - name: record
     description: GDPR Record of Processing Activities
 servers:
-  - url: 'https://records-of-processing-activities.fellesdatakatalog.brreg.no/api'
+  - url: 'https://records-of-processing-activities.fellesdatakatalog.brreg.no'
 paths:
-  /organizations/{organizationId}/representatives:
+  /api/organizations/{organizationId}/representatives:
     get:
       tags:
         - organization
@@ -64,12 +64,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organization'
       
-  /organizations/{organizationId}/records:
+  /api/organizations/{organizationId}/records:
     patch:
       tags:
         - record
       description: Patch a specific GDPR record by id
-      operationId: patchRecordById
+      operationId: patchRecord
       parameters:
         - in: path
           name: organizationId
@@ -145,7 +145,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResource'
-  /organizations/{organizationId}/records/{recordId}:
+  /api/organizations/{organizationId}/records/{recordId}:
+    patch:
+      tags:
+        - record
+      description: Patch a specific GDPR record by id
+      operationId: patchRecordById
+      parameters:
+        - in: path
+          name: recordId
+          description: id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: organizationId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
     get:
       tags:
         - record

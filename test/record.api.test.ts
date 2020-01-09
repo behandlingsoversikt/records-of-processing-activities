@@ -145,7 +145,7 @@ describe('/api/organizations/{organizationId}/records', () => {
   });
 
   const supportedMethods =
-    spec.paths['/organizations/{organizationId}/records'];
+    spec.paths['/api/organizations/{organizationId}/records'];
 
   const {
     post: {
@@ -175,7 +175,7 @@ describe('/api/organizations/{organizationId}/records', () => {
       .expect(
         apiValidator.validateResponse(
           'post',
-          '/organizations/{organizationId}/records'
+          '/api/organizations/{organizationId}/records'
         )
       );
   });
@@ -192,7 +192,7 @@ describe('/api/organizations/{organizationId}/records', () => {
       .expect(
         apiValidator.validateResponse(
           'patch',
-          '/organizations/{organizationId}/records'
+          '/api/organizations/{organizationId}/records'
         )
       );
     // expect(body).to.deep.equal(recordMock);
@@ -207,7 +207,7 @@ describe('/api/organizations/{organizationId}/records', () => {
       .expect(
         apiValidator.validateResponse(
           'get',
-          '/organizations/{organizationId}/records'
+          '/api/organizations/{organizationId}/records'
         )
       );
   });
@@ -215,7 +215,7 @@ describe('/api/organizations/{organizationId}/records', () => {
 
 describe('/api/organizations/{organizationId}/records/{recordId}', () => {
   const supportedMethods =
-    spec.paths['/organizations/{organizationId}/records/{recordId}'];
+    spec.paths['/api/organizations/{organizationId}/records/{recordId}'];
 
   let recordMock: any = {};
   beforeEach(async () => {
@@ -247,7 +247,7 @@ describe('/api/organizations/{organizationId}/records/{recordId}', () => {
       .expect(
         apiValidator.validateResponse(
           'delete',
-          '/organizations/{organizationId}/records/{recordId}'
+          '/api/organizations/{organizationId}/records/{recordId}'
         )
       );
   });
@@ -261,7 +261,7 @@ describe('/api/organizations/{organizationId}/records/{recordId}', () => {
       .expect(
         apiValidator.validateResponse(
           'get',
-          '/organizations/{organizationId}/records/{recordId}'
+          '/api/organizations/{organizationId}/records/{recordId}'
         )
       );
   });

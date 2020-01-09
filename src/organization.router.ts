@@ -4,7 +4,7 @@ import { enforcePermissions } from './keycloak';
 import { apiValidator } from './validator';
 
 const recordsPath = '/records';
-const validationPath = `/organizations/{organizationId}${recordsPath}`;
+const validationPath = `/api/organizations/{organizationId}${recordsPath}`;
 
 export const createOrganizationRouter = (): Router => {
   const organizationRouter = Router();
