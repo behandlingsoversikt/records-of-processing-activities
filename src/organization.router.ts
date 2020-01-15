@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import organizationHandlers from './organization.handlers';
-import { enforcePermissions } from './keycloak';
+import { enforceWritePermissions } from './keycloak';
 import { apiValidator } from './validator';
 
 const recordsPath = '/records';
@@ -11,46 +11,46 @@ export const createOrganizationRouter = (): Router => {
 
   organizationRouter.get(
     '/:organizationId/representatives',
-    enforcePermissions,
+    enforceWritePermissions,
     organizationHandlers.getRepresentatives
   );
   organizationRouter.patch(
     '/:organizationId/representatives',
-    enforcePermissions,
+    enforceWritePermissions,
     organizationHandlers.patchRepresentatives
   );
 
   organizationRouter.get(
     `/:organizationId${recordsPath}`,
-    enforcePermissions,
+    enforceWritePermissions,
     apiValidator.validate('get', validationPath),
     organizationHandlers.getRecordsByOrganizationId
   );
 
   organizationRouter.post(
     `/:organizationId${recordsPath}`,
-    enforcePermissions,
+    enforceWritePermissions,
     apiValidator.validate('post', validationPath),
     organizationHandlers.createRecord
   );
 
   organizationRouter.patch(
     `/:organizationId${recordsPath}/:recordId?`,
-    enforcePermissions,
+    enforceWritePermissions,
     apiValidator.validate('patch', validationPath),
     organizationHandlers.patchRecordById
   );
 
   organizationRouter.delete(
     `/:organizationId${recordsPath}/:recordId`,
-    enforcePermissions,
+    enforceWritePermissions,
     apiValidator.validate('delete', `${validationPath}/{recordId}`),
     organizationHandlers.deleteRecordById
   );
 
   organizationRouter.get(
     `/:organizationId${recordsPath}/:recordId`,
-    enforcePermissions,
+    enforceWritePermissions,
     apiValidator.validate('get', `${validationPath}/{recordId}`),
     organizationHandlers.getRecordById
   );
