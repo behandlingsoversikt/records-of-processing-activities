@@ -112,7 +112,7 @@ let app: Application;
 before(async () => {
   stub(
     keycloak,
-    'enforcePermissions'
+    'enforceWritePermissions'
   ).callsFake((_req: any, _res: any, next: any) => next());
 
   const connectionUris: string = await mongoTestServer.getConnectionString();

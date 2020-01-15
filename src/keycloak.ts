@@ -9,7 +9,7 @@ const keycloakInstance = new Keycloak({}, keycloakConfig);
 const getAuthorities = ({ authorities }: any): string[] =>
   authorities ? authorities.split(',') : [];
 
-const checkPermissions = (
+const checkWritePermissions = (
   { content }: Token,
   { params: { organizationId } }: Request
 ) =>
@@ -17,8 +17,8 @@ const checkPermissions = (
     authority.includes(`organization:${organizationId}:admin`)
   );
 
-export const enforcePermissions: RequestHandler = keycloakInstance.protect(
-  checkPermissions
+export const enforceWritePermissions: RequestHandler = keycloakInstance.protect(
+  checkWritePermissions
 );
 
 export default keycloakInstance;
