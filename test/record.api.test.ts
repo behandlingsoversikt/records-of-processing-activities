@@ -115,6 +115,11 @@ before(async () => {
     'enforceWritePermissions'
   ).callsFake((_req: any, _res: any, next: any) => next());
 
+  stub(
+    keycloak,
+    'enforceReadPermissions'
+  ).callsFake((_req: any, _res: any, next: any) => next());
+
   const connectionUris: string = await mongoTestServer.getConnectionString();
   stub(db, 'getConnectionUris').callsFake(() => connectionUris);
 
