@@ -17,8 +17,25 @@ const checkWritePermissions = (
     authority.includes(`organization:${organizationId}:admin`)
   );
 
+const checkReadPermissions = (
+  { content }: Token,
+  { params: { organizationId } }: Request
+) => {
+  const readAndWritePermissions = [
+    `organization:${organizationId}:read`,
+    `organization:${organizationId}:admin`
+  ];
+  return getAuthorities(content).some(authority =>
+    readAndWritePermissions.includes(authority)
+  );
+};
+
 export const enforceWritePermissions: RequestHandler = keycloakInstance.protect(
   checkWritePermissions
+);
+
+export const enforceReadPermissions: RequestHandler = keycloakInstance.protect(
+  checkReadPermissions
 );
 
 export default keycloakInstance;

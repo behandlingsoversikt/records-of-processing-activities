@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import organizationHandlers from './organization.handlers';
-import { enforceWritePermissions } from './keycloak';
+import { enforceWritePermissions, enforceReadPermissions } from './keycloak';
 import { apiValidator } from './validator';
 
 const recordsPath = '/records';
@@ -11,7 +11,7 @@ export const createOrganizationRouter = (): Router => {
 
   organizationRouter.get(
     '/:organizationId/representatives',
-    enforceWritePermissions,
+    enforceReadPermissions,
     organizationHandlers.getRepresentatives
   );
   organizationRouter.patch(
@@ -22,7 +22,7 @@ export const createOrganizationRouter = (): Router => {
 
   organizationRouter.get(
     `/:organizationId${recordsPath}`,
-    enforceWritePermissions,
+    enforceReadPermissions,
     apiValidator.validate('get', validationPath),
     organizationHandlers.getRecordsByOrganizationId
   );
@@ -50,7 +50,7 @@ export const createOrganizationRouter = (): Router => {
 
   organizationRouter.get(
     `/:organizationId${recordsPath}/:recordId`,
-    enforceWritePermissions,
+    enforceReadPermissions,
     apiValidator.validate('get', `${validationPath}/{recordId}`),
     organizationHandlers.getRecordById
   );
