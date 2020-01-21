@@ -38,7 +38,6 @@ jobs:
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/records-of-processing-activities
             helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/production.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
-            cat ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
@@ -56,6 +55,13 @@ jobs:
           KUBECONFIG: '/github/workspace/.kube/config'
         with:
           args: "apply -f ./kubectlapply.yaml --force"
+
+      - name: Notify slack of deploy
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: pullreminders/slack-action@master
+        with:
+          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: records-of-processing-activities deployed to production\"}'
 
       - name: Trigger deploy to demo
         uses: peter-evans/repository-dispatch@master
