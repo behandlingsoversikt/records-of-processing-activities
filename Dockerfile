@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm i
-
+RUN npm audit
 COPY tsconfig.json .
 COPY spec ./spec
 COPY config ./config
