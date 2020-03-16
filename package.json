@@ -68,7 +68,7 @@
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "mocha": "^6.2.0",
-    "mongodb-memory-server": "^5.2.6",
+    "mongodb-memory-server": "^6.3.3",
     "prettier": "^1.18.2",
     "sinon": "^7.5.0",
     "supertest": "^4.0.2",
