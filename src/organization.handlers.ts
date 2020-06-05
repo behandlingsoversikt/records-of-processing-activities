@@ -51,7 +51,8 @@ export default {
     try {
       const docs = await RecordModel.find({ organizationId })
         .skip(limit * page - limit)
-        .limit(limit);
+        .limit(limit)
+        .sort({ createdAt: 'desc' });
 
       const total = await RecordModel.estimatedDocumentCount();
       res.status(200).send(toPagedResource(docs, page, limit, total));
