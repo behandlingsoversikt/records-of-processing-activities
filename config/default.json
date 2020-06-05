@@ -13,7 +13,7 @@
     "config": {
       "realm": "fdk",
       "bearer-only": true,
-      "auth-server-url": "https://sso.ut1.fellesdatakatalog.brreg.no/auth",
+      "auth-server-url": "https://sso.staging.fellesdatakatalog.digdir.no/auth",
       "ssl-required": "external",
       "resource": "records-of-processing-activities",
       "verify-token-audience": true
