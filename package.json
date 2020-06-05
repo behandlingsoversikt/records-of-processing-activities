@@ -15,7 +15,6 @@
   "engines": {
     "node": ">= 12.13.0"
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "config": {
