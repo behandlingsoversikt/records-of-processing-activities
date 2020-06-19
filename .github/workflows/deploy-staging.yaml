@@ -1,4 +1,4 @@
-name: Build and deploy to staging (digdir) when pull request is created
+name: Build and deploy to staging when pull request is created
 
 on:
   pull_request:
@@ -37,7 +37,7 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/records-of-processing-activities
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/staging-digdir.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/records-of-processing-activities:$GITHUB_SHA" -f ./helm/records-of-processing-activities/values/staging.yaml ./helm/records-of-processing-activities/ > ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
