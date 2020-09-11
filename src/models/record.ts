@@ -24,8 +24,14 @@ const recordSchemaDefinition = {
   title: { type: String },
   // Formålet med behandlingen
   purpose: { type: String },
-  // Kategorier av registrerte
-  dataSubjectCategories: [String],
+  // Kategorier av personopplysninger og registrerte
+  categories: [
+    {
+      dataSubjectCategories: { type: String },
+      personalDataCategories: [String]
+    }
+  ],
+  dataSubjectCategories: String,
   // Behandlingsgrunnlagt artikkel 6
   articleSixBasis: {
     type: [
@@ -86,8 +92,6 @@ const recordSchemaDefinition = {
       }
     }
   },
-  // Kategorier av personopplysninger
-  personalDataCategories: [String],
   // Beskrivelse av tekniske og organisatoriske sikkerhetstiltak
   securityMeasures: String,
   // Planlagte tidsfrister for sletting
