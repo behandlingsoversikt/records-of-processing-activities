@@ -28,7 +28,7 @@ export interface Record {
   organizationId?: string;
   purpose?: string;
   title?: string;
-  dataSubjectCategories?: string[];
+  categories?: Categories[];
   articleSixBasis?: ArticleSix[];
   otherArticles?: {
     articleNine?: Article;
@@ -52,7 +52,6 @@ export interface Record {
     distributionOfResponsibilities?: string;
     contactPoints?: ContactPoint[];
   };
-  personalDataCategories?: string[];
   personalDataSubjects?: string;
   securityMeasures?: string;
   plannedDeletion?: string;
@@ -69,6 +68,11 @@ export interface Record {
     guarantees?: string;
   };
   updatedAt?: Date;
+}
+
+export interface Categories {
+  dataSubjectCategories?: string;
+  personalDataCategories?: string[];
 }
 
 export interface Organization {

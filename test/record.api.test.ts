@@ -38,12 +38,26 @@ const generateRecordMock = (): Record => {
     purpose: lorem.sentence(),
     status: RecordStatus.DRAFT,
     organizationId: mockOrganizationId,
-    dataSubjectCategories: lorem
-      .words(random.number({ min: 1, max: 10 }))
-      .split(' '),
-    personalDataCategories: lorem
-      .words(random.number({ min: 1, max: 10 }))
-      .split(' '),
+    categories: [
+      {
+        personalDataCategories: lorem
+          .words(random.number({ min: 1, max: 10 }))
+          .split(' '),
+        dataSubjectCategories: lorem.word()
+      },
+      {
+        personalDataCategories: lorem
+          .words(random.number({ min: 1, max: 10 }))
+          .split(' '),
+        dataSubjectCategories: lorem.word()
+      },
+      {
+        personalDataCategories: lorem
+          .words(random.number({ min: 1, max: 10 }))
+          .split(' '),
+        dataSubjectCategories: lorem.word()
+      }
+    ],
     articleSixBasis: [
       { legality: lorem.sentence(), referenceUrl: internet.url() },
       { legality: lorem.sentence(), referenceUrl: internet.url() },
