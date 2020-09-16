@@ -42,11 +42,13 @@ export interface Record {
       agreementUrl?: string;
     }
   ];
-  dataProcessorContactDetails?: {
-    name?: string;
-    email?: string;
-    phone?: string;
-  };
+  dataProcessorContactDetails?: [
+    {
+      name?: string;
+      email?: string;
+      phone?: string;
+    }
+  ];
   commonDataControllerContact?: {
     companies?: string;
     distributionOfResponsibilities?: string;

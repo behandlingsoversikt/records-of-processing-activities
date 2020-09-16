@@ -353,7 +353,9 @@ components:
           type: string
           description: Skriv inn hvilke systemer som behandler opplysningene.
         dataProcessorContactDetails:
-          $ref: "#/components/schemas/ContactPoint"
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactPoint"
         commonDataControllerContact:
           type: object
           description: Dersom to eller flere behandlingsansvarlige i fellesskap fastsetter formålene med og midlene for behandlingen, skal de være felles behandlingsansvarlige, jfr. Artikkel 26 nr 1.
