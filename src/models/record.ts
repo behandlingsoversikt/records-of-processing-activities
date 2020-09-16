@@ -72,9 +72,14 @@ const recordSchemaDefinition = {
   },
   // Daglig behandlingsansvarlig
   dataProcessorContactDetails: {
-    name: String,
-    email: String,
-    phone: String
+    type: [
+      {
+        _id: false,
+        name: { type: String },
+        email: { type: String },
+        phone: { type: String }
+      }
+    ]
   },
   // Felles behandlingsansvarlig
   commonDataControllerContact: {

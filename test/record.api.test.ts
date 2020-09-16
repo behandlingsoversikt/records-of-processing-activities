@@ -96,11 +96,13 @@ const generateRecordMock = (): Record => {
         }
       ]
     },
-    dataProcessorContactDetails: {
-      name: name.findName(),
-      phone: random.number({ min: 20_00_00_00, max: 99_99_99_99 }).toString(),
-      email: internet.email()
-    },
+    dataProcessorContactDetails: [
+      {
+        name: name.findName(),
+        phone: random.number({ min: 20_00_00_00, max: 99_99_99_99 }).toString(),
+        email: internet.email()
+      }
+    ],
     dataTransfers: {
       transferred: true,
       thirdCountryRecipients: `${company.companyName()} LLC`,
