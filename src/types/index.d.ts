@@ -57,7 +57,6 @@ export interface Record {
   personalDataSubjects?: string;
   securityMeasures?: string;
   plannedDeletion?: string;
-  highPrivacyRisk?: boolean;
   dataProtectionImpactAssessment?: {
     conducted?: boolean;
     assessmentReportUrl?: string;

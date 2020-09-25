@@ -101,8 +101,6 @@ const recordSchemaDefinition = {
   securityMeasures: String,
   // Planlagte tidsfrister for sletting
   plannedDeletion: String,
-  // Høy personvernrisiko
-  highPrivacyRisk: Boolean,
   // Risikovurdering/DPIA gjennomført
   dataProtectionImpactAssessment: {
     conducted: Boolean,
