@@ -320,9 +320,6 @@ components:
         plannedDeletion:
           type: string
           description: For de forskjellige kategorier av personopplysninger, dersom mulig
-        highPrivacyRisk:
-          type: boolean
-          description: Gjør en vurdering av dette, blant annet med hensyn til eventuell gjennomføring av vurdering av personvernkonsekvenser (DPIA)
         articleSixBasis:
           type: array
           description: Hvis behandlingen gjelder en rettslig forpliktelse, berettighet interesse mv. (c, e, eller f) kan du også henvise til annen lovgivning, dersom relevant.
