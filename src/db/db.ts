@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import config from 'config';
+import logger from '../logger';
 
 const { host, port, name, username = '', password = '' } = config.get(
   'mongodb'
@@ -18,5 +19,5 @@ export const connectDb = async (): Promise<void> => {
   };
 
   await mongoose.connect(getConnectionUris(), options);
-  mongoose.connection.on('error', console.error);
+  mongoose.connection.on('error', logger.error);
 };
