@@ -6,6 +6,7 @@ import { NotFoundHttpError } from './lib/http-error';
 import { elseThrow } from './lib/else-throw';
 import { toPagedResource } from './lib/paginate';
 import { OrganizationDocument, OrganizationModel } from './models/organization';
+import logger from './logger';
 
 import { OrganizationResourceHandler } from './types';
 
@@ -14,7 +15,10 @@ export default {
     const { recordId } = req.params;
     RecordModel.findOne({ id: recordId })
       .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
-      .then(doc => res.status(200).send(doc.toObject()))
+      .then(doc => {
+        logger.info(`Get record with id ${recordId}`);
+        res.status(200).send(doc.toObject());
+      })
       .catch(next);
   },
 
@@ -22,6 +26,7 @@ export default {
     const { recordId } = req.params;
     RecordModel.deleteOne({ id: recordId })
       .then(({ deletedCount }) => {
+        logger.info(`Delete record with id ${recordId}`);
         const status = deletedCount ? 204 : 404;
         res.status(status).send();
       })
@@ -38,7 +43,10 @@ export default {
       setDefaultsOnInsert: true
     })
       .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
-      .then(doc => res.status(200).send(doc.toObject()))
+      .then(doc => {
+        logger.info(`Patch record with id ${recordId}`);
+        res.status(200).send(doc.toObject());
+      })
       .catch(next);
   },
 
@@ -55,6 +63,7 @@ export default {
         .sort({ createdAt: 'desc' });
 
       const total = await RecordModel.estimatedDocumentCount();
+      logger.info(`Get ${total} records by organizationId ${organizationId}`);
       res.status(200).send(toPagedResource(docs, page, limit, total));
     } catch (err) {
       next(err);
@@ -74,12 +83,15 @@ export default {
     )
       .then(elseThrow<OrganizationDocument>(() => new NotFoundHttpError()))
       .then(() => {
-        new RecordModel({ ...data, organizationId }).save().then(({ id }) =>
-          res
+        new RecordModel({ ...data, organizationId }).save().then(({ id }) => {
+          logger.info(
+            `Record with id ${id} created for organizationId ${organizationId}`
+          );
+          return res
             .location(id)
             .status(201)
-            .send()
-        );
+            .send();
+        });
       })
       .catch(next);
   },
@@ -89,7 +101,10 @@ export default {
 
     OrganizationModel.findOne({ id: organizationId })
       .then(elseThrow<RecordDocument>(() => new NotFoundHttpError()))
-      .then(doc => res.status(200).send(doc.toObject()))
+      .then(doc => {
+        logger.info(`Get representatives for organizationId ${organizationId}`);
+        res.status(200).send(doc.toObject());
+      })
       .catch(next);
   },
 
@@ -101,7 +116,12 @@ export default {
       upsert: true,
       setDefaultsOnInsert: true
     })
-      .then(doc => res.status(200).send(doc.toObject()))
+      .then(doc => {
+        logger.info(
+          `Patch representatives for organizationId ${organizationId}`
+        );
+        res.status(200).send(doc.toObject());
+      })
       .catch(next);
   }
 } as OrganizationResourceHandler;

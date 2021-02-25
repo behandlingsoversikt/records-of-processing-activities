@@ -33,6 +33,7 @@
     "keycloak-connect": "^7.0.1",
     "lodash": "^4.17.19",
     "mongoose": "^5.7.3",
+    "morgan": "^1.10.0",
     "uuid": "^3.3.3",
     "winston": "^3.3.3"
   },
@@ -49,6 +50,7 @@
     "@types/lodash": "^4.14.141",
     "@types/mocha": "^5.2.7",
     "@types/mongoose": "^5.5.18",
+    "@types/morgan": "^1.9.2",
     "@types/node": "^12.7.5",
     "@types/sinon": "^7.5.0",
     "@types/supertest": "^2.0.8",

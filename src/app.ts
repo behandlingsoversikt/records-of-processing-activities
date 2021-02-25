@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
@@ -7,6 +8,7 @@ import { connectDb } from './db/db';
 import { createOrganizationRouter } from './organization.router';
 import { commonErrorHandler } from './lib/common-error-handler';
 import { createLivenessRouter } from './liveness.router';
+import { streamLogger } from './logger';
 
 export async function createApp(): Promise<Application> {
   const app = express();
@@ -21,6 +23,15 @@ export async function createApp(): Promise<Application> {
   app.use('/api/organizations', createOrganizationRouter());
 
   app.use(commonErrorHandler);
+
+  app.use(
+    morgan('combined', {
+      skip: function(req: any) {
+        return req.url === '/ping' || req.url === '/ready';
+      },
+      stream: streamLogger
+    })
+  );
 
   await connectDb();
 
