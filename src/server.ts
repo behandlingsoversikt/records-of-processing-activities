@@ -1,6 +1,7 @@
 import config = require('config');
 
 import { createApp } from './app';
+import logger from './logger';
 
 const PORT = Number(config.get('server.port')) || 8000;
 
@@ -10,10 +11,10 @@ createApp()
       if (err) {
         throw err;
       }
-      console.log(`server running on: ${PORT}`);
+      logger.info(`server running on: ${PORT}`);
     });
   })
   .catch(err => {
-    console.error(err);
+    logger.error('error occurred when starting server', { error: err });
     process.exit(1);
   });
