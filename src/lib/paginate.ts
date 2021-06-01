@@ -17,6 +17,6 @@ export const toPagedResource = (
     pageNumber: page,
     pagesTotal: ((total / limit) >> 0) + 1, // integer division
     size: data.length,
-    hits: data.map(doc => doc.toObject())
+    hits: data.map(doc => doc.toObject()) as RecordDocument[]
   };
 };
