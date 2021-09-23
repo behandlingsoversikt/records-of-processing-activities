@@ -1,0 +1,44 @@
+<configuration>
+    <property resource="application.yml" />
+
+    <!-- use Spring default values -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="org.eclipse.jetty" level="INFO"/>
+
+    <appender name="compact" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <loggerName/>
+                <logLevel>
+                    <fieldName>severity</fieldName>
+                </logLevel>
+                <message>
+                    <fieldName>shortMessage</fieldName>
+                </message>
+                <pattern>
+                    <pattern>{ "message": "%exception%message", "serviceContext": { "service": "records-of-processing-activities" } }</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="json-async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="json"/>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="${LOG_FORMAT:-json-async}" />
+    </root>
+
+</configuration>

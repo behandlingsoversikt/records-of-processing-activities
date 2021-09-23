@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+  app:
+    image: eu.gcr.io/digdir-fdk-infra/records-of-processing-activities:test
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SSO_HOST=https://sso.staging.fellesdatakatalog.digdir.no
