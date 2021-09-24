@@ -10,6 +10,7 @@ spring:
   security.oauth2.resourceserver.jwt:
     jwk-set-uri: ${SSO_HOST}/auth/realms/fdk/protocol/openid-connect/certs
     issuer-uri: ${SSO_HOST}/auth/realms/fdk
+  data.mongodb.uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/records-of-processing-activities?authSource=admin&authMechanism=SCRAM-SHA-1
 
 ---
 spring:
@@ -17,6 +18,7 @@ spring:
   security.oauth2.resourceserver.jwt:
     jwk-set-uri: https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk/protocol/openid-connect/certs
     issuer-uri: https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk
+  data.mongodb.uri: mongodb://admin:admin@localhost:27017/records-of-processing-activities?authSource=admin&authMechanism=SCRAM-SHA-1
 
 ---
 spring:
