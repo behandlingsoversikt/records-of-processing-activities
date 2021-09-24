@@ -38,7 +38,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 DelegatingOAuth2TokenValidator(
                     JwtTimestampValidator(),
                     JwtIssuerValidator(properties.jwt.issuerUri),
-                    JwtClaimValidator(AUD) { aud: List<String> -> aud.contains("fdk-harvest-admin") }
+                    JwtClaimValidator(AUD) { aud: List<String> -> aud.contains("records-of-processing-activities") }
             )
         )
         return jwtDecoder

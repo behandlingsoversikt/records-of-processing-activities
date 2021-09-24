@@ -11,6 +11,8 @@ A service that provides functionality to register, modify, list and delete GDPR 
 
 ```
 export SSO_HOST
+export MONGO_USERNAME
+export MONGO_PASSWORD
 ```
 
 ## Run tests
@@ -22,8 +24,16 @@ mvn verify
 ```
 docker-compose up --build
 ```
+
+Then in another terminal e.g.
+```
+% curl -i http://localhost:8081/ping
+% curl -i http://localhost:8081/ready
+```
+
 or:
 ```
+docker-compose up -d
 mvn spring-boot:run -Dspring-boot.run.profiles=develop
 ```
 
