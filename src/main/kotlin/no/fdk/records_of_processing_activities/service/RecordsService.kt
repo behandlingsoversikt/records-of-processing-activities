@@ -15,6 +15,9 @@ class RecordsService(
     fun getRecords(organizationId: String): List<RecordDTO> =
         recordRepository.findAllByOrganizationId(organizationId).map { it.toDTO() }
 
+    fun getRecordById(recordId: String, organizationId: String): RecordDTO? =
+        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)?.toDTO()
+
     fun getRepresentatives(organizationId: String): Organization? =
         organizationRepository.getByOrganizationId(organizationId)?.toDTO()
 

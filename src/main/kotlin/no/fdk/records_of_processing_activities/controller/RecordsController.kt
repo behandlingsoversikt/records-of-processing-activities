@@ -26,4 +26,18 @@ class RecordsController(
             ResponseEntity(service.getRecords(organizationId), HttpStatus.OK)
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
+    @GetMapping(path = ["/{recordId}"])
+    fun getRecordById(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable organizationId: String,
+        @PathVariable recordId: String
+    ): ResponseEntity<RecordDTO> {
+        val record = service.getRecordById(recordId, organizationId)
+        return when {
+            !permissions.hasOrgReadPermission(jwt, organizationId) -> ResponseEntity(HttpStatus.FORBIDDEN)
+            record == null -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(record, HttpStatus.OK)
+        }
+    }
+
 }
