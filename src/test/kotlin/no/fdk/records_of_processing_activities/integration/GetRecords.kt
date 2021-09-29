@@ -2,6 +2,7 @@ package no.fdk.records_of_processing_activities.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.fdk.records_of_processing_activities.model.PagedRecords
 import no.fdk.records_of_processing_activities.utils.jwk.Access
 import no.fdk.records_of_processing_activities.utils.jwk.JwtToken
 import no.fdk.records_of_processing_activities.model.RecordDTO
@@ -46,9 +47,14 @@ class GetRecords : ApiTestContext() {
         val rsp = authorizedRequest(
             port, "/api/organizations/123456789/records", HttpMethod.GET,
             token = JwtToken(Access.ORG_READ).toString())
-        val body: List<RecordDTO> = mapper.readValue(rsp["body"] as String)
+        val body: PagedRecords = mapper.readValue(rsp["body"] as String)
 
-        assertEquals(listOf(RECORD_DTO_0, RECORD_DTO_1) , body)
+        val expected = PagedRecords(
+            pageNumber = 0, pagesTotal = 1, size = 100,
+            hits = listOf(RECORD_DTO_0, RECORD_DTO_1)
+        )
+
+        assertEquals(expected, body)
     }
 
     @Test
@@ -56,9 +62,14 @@ class GetRecords : ApiTestContext() {
         val rsp = authorizedRequest(
             port, "/api/organizations/123456789/records", HttpMethod.GET,
             token = JwtToken(Access.ORG_WRITE).toString())
-        val body: List<RecordDTO> = mapper.readValue(rsp["body"] as String)
+        val body: PagedRecords = mapper.readValue(rsp["body"] as String)
 
-        assertEquals(listOf(RECORD_DTO_0, RECORD_DTO_1) , body)
+        val expected = PagedRecords(
+            pageNumber = 0, pagesTotal = 1, size = 100,
+            hits = listOf(RECORD_DTO_0, RECORD_DTO_1)
+        )
+
+        assertEquals(expected, body)
     }
 
     @Test
@@ -66,9 +77,44 @@ class GetRecords : ApiTestContext() {
         val rsp = authorizedRequest(
             port, "/api/organizations/123456789/records", HttpMethod.GET,
             token = JwtToken(Access.ROOT).toString())
-        val body: List<RecordDTO> = mapper.readValue(rsp["body"] as String)
+        val body: PagedRecords = mapper.readValue(rsp["body"] as String)
 
-        assertEquals(listOf(RECORD_DTO_0, RECORD_DTO_1) , body)
+        val expected = PagedRecords(
+            pageNumber = 0, pagesTotal = 1, size = 100,
+            hits = listOf(RECORD_DTO_0, RECORD_DTO_1)
+        )
+
+        assertEquals(expected, body)
+    }
+
+    @Test
+    fun `Limit response to 1 record`() {
+        val rsp = authorizedRequest(
+            port, "/api/organizations/123456789/records?limit=1", HttpMethod.GET,
+            token = JwtToken(Access.ORG_READ).toString())
+        val body: PagedRecords = mapper.readValue(rsp["body"] as String)
+
+        val expected = PagedRecords(
+            pageNumber = 0, pagesTotal = 2, size = 1,
+            hits = listOf(RECORD_DTO_0)
+        )
+
+        assertEquals(expected, body)
+    }
+
+    @Test
+    fun `Second page of limited response`() {
+        val rsp = authorizedRequest(
+            port, "/api/organizations/123456789/records?limit=1&page=1", HttpMethod.GET,
+            token = JwtToken(Access.ORG_READ).toString())
+        val body: PagedRecords = mapper.readValue(rsp["body"] as String)
+
+        val expected = PagedRecords(
+            pageNumber = 1, pagesTotal = 2, size = 1,
+            hits = listOf(RECORD_DTO_1)
+        )
+
+        assertEquals(expected, body)
     }
 
 }
