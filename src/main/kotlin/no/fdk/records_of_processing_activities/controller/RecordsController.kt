@@ -1,5 +1,6 @@
 package no.fdk.records_of_processing_activities.controller
 
+import no.fdk.records_of_processing_activities.model.PagedRecords
 import no.fdk.records_of_processing_activities.model.RecordDTO
 import no.fdk.records_of_processing_activities.service.EndpointPermissions
 import no.fdk.records_of_processing_activities.service.RecordsService
@@ -20,10 +21,12 @@ class RecordsController(
     @GetMapping
     fun getRecords(
         @AuthenticationPrincipal jwt: Jwt,
-        @PathVariable organizationId: String
-    ): ResponseEntity<List<RecordDTO>> =
+        @PathVariable organizationId: String,
+        @RequestParam(value = "limit", required = false) limit: Int?,
+        @RequestParam(value = "page", required = false) page: Int?
+    ): ResponseEntity<PagedRecords> =
         if (permissions.hasOrgReadPermission(jwt, organizationId)) {
-            ResponseEntity(service.getRecords(organizationId), HttpStatus.OK)
+            ResponseEntity(service.getRecords(organizationId, limit ?: 100, page ?: 0), HttpStatus.OK)
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
     @GetMapping(path = ["/{recordId}"])

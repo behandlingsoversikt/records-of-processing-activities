@@ -56,6 +56,13 @@ data class RecordDTO(
     val updatedAt: LocalDate?
 )
 
+data class PagedRecords(
+    val pageNumber: Int,
+    val pagesTotal: Int,
+    val size: Int,
+    val hits: List<RecordDTO>
+)
+
 data class ContactPoint(
     val name: String?,
     val email: String?,
