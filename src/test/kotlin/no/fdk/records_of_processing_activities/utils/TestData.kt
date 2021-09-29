@@ -59,6 +59,27 @@ val RECORD_DTO_1 = RecordDTO(
     null, null, null,
 )
 
+val RECORD_DBO_2 = RecordDBO(
+    id = ObjectId(),
+    recordId = "record2",
+    status = RecordStatus.DRAFT,
+    organizationId = "987654321",
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null,
+)
+
+val RECORD_DTO_2 = RecordDTO(
+    id = "record2",
+    status = RecordStatus.DRAFT,
+    organizationId = "987654321",
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null,
+)
+
 val ORGANIZATION_DBO_0 = OrganizationDBO(
     id = ObjectId(),
     organizationId = "123456789",
@@ -70,7 +91,7 @@ val ORGANIZATION_DTO_0 = Organization(
     null, null, null
 )
 
-fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1)
+fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2)
     .map { it.mapDBO() }
 
 fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0).map { it.mapDBO() }
