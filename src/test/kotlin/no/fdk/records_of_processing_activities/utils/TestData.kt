@@ -80,6 +80,14 @@ val RECORD_DTO_2 = RecordDTO(
     null, null, null,
 )
 
+val RECORD_TO_BE_CREATED = RecordDTO(
+    id = null, status = null, organizationId = null,
+    null, title = "To be created", null, null, null,
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null,
+)
+
 val ORGANIZATION_DBO_0 = OrganizationDBO(
     id = ObjectId(),
     organizationId = "123456789",

@@ -2,6 +2,7 @@ package no.fdk.records_of_processing_activities.service
 
 import no.fdk.records_of_processing_activities.model.Organization
 import no.fdk.records_of_processing_activities.model.PagedRecords
+import no.fdk.records_of_processing_activities.model.RecordDBO
 import no.fdk.records_of_processing_activities.model.RecordDTO
 import no.fdk.records_of_processing_activities.repository.OrganizationRepository
 import no.fdk.records_of_processing_activities.repository.RecordRepository
@@ -28,6 +29,9 @@ class RecordsService(
 
     fun getRecordById(recordId: String, organizationId: String): RecordDTO? =
         recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)?.toDTO()
+
+    fun createRecord(record: RecordDTO, organizationId: String): RecordDBO =
+        recordRepository.save(record.mapForCreate(organizationId))
 
     fun getRepresentatives(organizationId: String): Organization? =
         organizationRepository.getByOrganizationId(organizationId)?.toDTO()
