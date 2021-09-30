@@ -1,11 +1,10 @@
 package no.fdk.records_of_processing_activities.service
 
-import no.fdk.records_of_processing_activities.model.Organization
-import no.fdk.records_of_processing_activities.model.OrganizationDBO
-import no.fdk.records_of_processing_activities.model.RecordDBO
-import no.fdk.records_of_processing_activities.model.RecordDTO
+import no.fdk.records_of_processing_activities.model.*
+import org.bson.types.ObjectId
+import java.util.*
 
-fun OrganizationDBO.toDTO() =
+fun OrganizationDBO.toDTO(): Organization =
     Organization(
         id = organizationId,
         dataControllerRepresentative,
@@ -13,11 +12,37 @@ fun OrganizationDBO.toDTO() =
         dataProtectionOfficer
     )
 
-fun RecordDBO.toDTO() =
+fun RecordDBO.toDTO(): RecordDTO =
     RecordDTO(
         id = recordId,
         status,
         organizationId,
+        purpose,
+        title,
+        categories,
+        articleSixBasis,
+        otherArticles,
+        businessAreas,
+        relatedDatasets,
+        dataProcessingAgreements,
+        dataProcessorContactDetails,
+        commonDataControllerContact,
+        personalDataSubjects,
+        securityMeasures,
+        plannedDeletion,
+        dataProtectionImpactAssessment,
+        privacyProcessingSystems,
+        recipientCategories,
+        dataTransfers,
+        updatedAt
+    )
+
+fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
+    RecordDBO(
+        id = ObjectId(),
+        recordId = UUID.randomUUID().toString(),
+        status = RecordStatus.DRAFT,
+        organizationId = currentOrganizationId,
         purpose,
         title,
         categories,

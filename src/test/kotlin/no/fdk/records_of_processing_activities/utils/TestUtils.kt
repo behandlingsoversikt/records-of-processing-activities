@@ -27,7 +27,7 @@ fun apiGet(port: Int, endpoint: String, acceptHeader: String?): Map<String,Any> 
             val responseBody = connection.inputStream.bufferedReader().use(BufferedReader::readText)
             mapOf(
                 "body"   to responseBody,
-                "header" to connection.headerFields.toString(),
+                "header" to connection.headerFields,
                 "status" to connection.responseCode)
         } else {
             mapOf(
@@ -68,7 +68,7 @@ fun authorizedRequest(
         val response = request.exchange(url, httpMethod, entity, String::class.java)
         mapOf(
             "body" to response.body,
-            "header" to response.headers.toString(),
+            "header" to response.headers,
             "status" to response.statusCode.value()
         )
 
