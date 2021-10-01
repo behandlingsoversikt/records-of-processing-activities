@@ -21,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-private val mapper = jacksonObjectMapper()
+private val mapper = jacksonObjectMapper().findAndRegisterModules()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(
@@ -69,9 +69,10 @@ class CreateRecord : ApiTestContext() {
             port, "/api/organizations/111111111/records/$newId", HttpMethod.GET,
             token = JwtToken(Access.ORG_WRITE).toString())
 
-        val expected = RECORD_TO_BE_CREATED.copy(id = newId, status = RecordStatus.DRAFT, organizationId = "111111111")
-
         val body: RecordDTO = mapper.readValue(rspAfter["body"] as String)
+
+        val expected = RECORD_TO_BE_CREATED.copy(id = newId, status = RecordStatus.DRAFT,
+            organizationId = "111111111", updatedAt = body.updatedAt)
 
         assertEquals(expected, body)
     }

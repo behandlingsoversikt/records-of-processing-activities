@@ -153,7 +153,7 @@ val RECORD_PATCH = RecordDTO(
         transferred = true,
         thirdCountryRecipients = "Sør Afrika",
         guarantees = "Nelson Mandela"),
-    updatedAt = LocalDate.of(2021, 8, 8)
+    updatedAt = null
 )
 
 val ORGANIZATION_DBO_0 = OrganizationDBO(
