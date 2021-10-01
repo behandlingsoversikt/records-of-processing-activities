@@ -1,9 +1,6 @@
 package no.fdk.records_of_processing_activities.service
 
-import no.fdk.records_of_processing_activities.model.Organization
-import no.fdk.records_of_processing_activities.model.PagedRecords
-import no.fdk.records_of_processing_activities.model.RecordDBO
-import no.fdk.records_of_processing_activities.model.RecordDTO
+import no.fdk.records_of_processing_activities.model.*
 import no.fdk.records_of_processing_activities.repository.OrganizationRepository
 import no.fdk.records_of_processing_activities.repository.RecordRepository
 import org.springframework.data.domain.Pageable
@@ -35,5 +32,8 @@ class RecordsService(
 
     fun getRepresentatives(organizationId: String): Organization? =
         organizationRepository.getByOrganizationId(organizationId)?.toDTO()
+
+    fun createRepresentatives(representatives: Organization, organizationId: String): OrganizationDBO =
+        organizationRepository.save(representatives.mapForCreate(organizationId))
 
 }

@@ -99,6 +99,16 @@ val ORGANIZATION_DTO_0 = Organization(
     null, null, null
 )
 
+val ORGANIZATION_TO_BE_CREATED = Organization(
+    id = null,
+    dataProtectionOfficer = ContactDetails(name = "Data Protector", email = "data@protection.com",
+        phone = "11223344", address = "Offisergata 5"),
+    dataControllerRepresentative = ContactDetails(name = "Data Controller", email = "data@controller.com",
+        phone = "55667788", address = "Representantgata 5"),
+    dataControllerRepresentativeInEU = ContactDetails(name = "Data EU Controller", email = "data@controller.eu",
+        phone = "99887766", address = "Europagata 5")
+)
+
 fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2)
     .map { it.mapDBO() }
 

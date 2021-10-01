@@ -63,32 +63,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Organization'
-      
-  /api/organizations/{organizationId}/records:
-    patch:
+    post:
       tags:
-        - record
-      description: Patch a specific GDPR record by id
-      operationId: patchRecord
+        - organization
+      summary: Creates the representatives of an organization
+      operationId: createRepresentatives
       parameters:
         - in: path
           name: organizationId
           schema:
             type: string
           required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Record'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Record'
+              $ref: '#/components/schemas/Organization'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Relative location to the new representatives
+
+  /api/organizations/{organizationId}/records:
     post:
       tags:
         - record
