@@ -63,6 +63,19 @@ class RecordsController(
                     ) }
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
+    @PatchMapping(path = ["/{recordId}"])
+    fun patchRecord(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable organizationId: String,
+        @PathVariable recordId: String,
+        @RequestBody record: RecordDTO
+    ): ResponseEntity<RecordDTO> =
+        if (permissions.hasOrgWritePermission(jwt, organizationId)) {
+            service.patchRecord(recordId, organizationId, record)
+                ?.let{ ResponseEntity(it, HttpStatus.CREATED) }
+                ?: ResponseEntity(HttpStatus.NOT_FOUND)
+        } else ResponseEntity(HttpStatus.FORBIDDEN)
+
     @DeleteMapping(path = ["/{recordId}"])
     fun deleteRecord(
         @AuthenticationPrincipal jwt: Jwt,

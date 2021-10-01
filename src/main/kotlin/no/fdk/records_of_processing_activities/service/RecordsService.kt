@@ -37,6 +37,11 @@ class RecordsService(
     fun createRecord(record: RecordDTO, organizationId: String): RecordDBO =
         recordRepository.save(record.mapForCreate(organizationId))
 
+    fun patchRecord(recordId: String, organizationId: String, patch: RecordDTO): RecordDTO? =
+        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)
+            ?.let { recordRepository.save(it.patchValues(patch)) }
+            ?.toDTO()
+
     fun getRepresentatives(organizationId: String): Organization? =
         organizationRepository.getByOrganizationId(organizationId)?.toDTO()
 

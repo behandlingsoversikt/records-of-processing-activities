@@ -3,6 +3,7 @@ package no.fdk.records_of_processing_activities.utils
 import com.google.common.collect.ImmutableMap
 import no.fdk.records_of_processing_activities.model.*
 import org.bson.types.ObjectId
+import java.time.LocalDate
 
 const val LOCAL_SERVER_PORT = 5000
 const val WIREMOCK_TEST_URI = "http://localhost:$LOCAL_SERVER_PORT"
@@ -99,6 +100,62 @@ val RECORD_TO_BE_DELETED = RecordDBO(
     null, null, null,
 )
 
+val RECORD_TO_BE_PATCHED = RecordDBO(
+    id = ObjectId(),
+    recordId = "tobepatched",
+    status = RecordStatus.DRAFT,
+    organizationId = "111222333",
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null,
+)
+
+val RECORD_PATCH = RecordDTO(
+    id = null, organizationId = null,
+    status = RecordStatus.APPROVED,
+    dataProcessorContactDetails = arrayListOf(
+        ContactPoint(
+            name = "Test Testbrukerg",
+            email = "test@bruker.no",
+            phone = "1337Testtelefon")),
+    dataProcessingAgreements = arrayListOf(
+        DataProcessingAgreement(
+            dataProcessorName = "Behandler",
+            agreementUrl = "Avtalen")),
+    categories = arrayListOf(Categories(
+        personalDataCategories = arrayListOf("Identifikasjonsopplysninger","Helseopplysninger"),
+        dataSubjectCategories = "Ansatte")),
+    commonDataControllerContact = CommonDataControllerContact(
+        companies = "testvirksomhet",
+        distributionOfResponsibilities = "Ansvarsfordeling",
+        contactPoints = arrayListOf(ContactPoint(
+            name = "kontaktpunkt",
+            email = "kon@taktpun.kt",
+            phone = "123459876qs"))),
+    title = "Tittel",
+    purpose = "Formål",
+    articleSixBasis = arrayListOf(ArticleSix(legality = "6.1.e",referenceUrl = "https://legalreference.no")),
+    otherArticles = OtherArticles(
+        articleNine = Article(checked = false,referenceUrl = ""),
+        articleTen = Article(checked = true, referenceUrl = "Annen lovgivning")),
+    businessAreas = arrayListOf("område"),
+    relatedDatasets = arrayListOf("1c941ffb-1849-44a6-ba06-ce6b1ddacc60"),
+    securityMeasures = "Nulla vitae elit libero",
+    plannedDeletion = "Planlagt sletting",
+    dataProtectionImpactAssessment = DataProtectionImpactAssessment(
+        conducted = true,
+        assessmentReportUrl = "https://www.link.no"),
+    personalDataSubjects = "Ansatt",
+    privacyProcessingSystems = "https://www.link.com",
+    recipientCategories = arrayListOf("Offentlige myndigheter","Hjelpeorganisasjoner"),
+    dataTransfers = DataTransfers(
+        transferred = true,
+        thirdCountryRecipients = "Sør Afrika",
+        guarantees = "Nelson Mandela"),
+    updatedAt = LocalDate.of(2021, 8, 8)
+)
+
 val ORGANIZATION_DBO_0 = OrganizationDBO(
     id = ObjectId(),
     organizationId = "123456789",
@@ -136,7 +193,7 @@ val ORGANIZATION_PATCH = Organization(
         phone = "55667788", address = "Representantgata 5"), null, null
 )
 
-fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2, RECORD_TO_BE_DELETED)
+fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2, RECORD_TO_BE_DELETED, RECORD_TO_BE_PATCHED)
     .map { it.mapDBO() }
 
 fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0, ORGANIZATION_TO_BE_PATCHED).map { it.mapDBO() }
