@@ -120,10 +120,26 @@ val ORGANIZATION_TO_BE_CREATED = Organization(
         phone = "99887766", address = "Europagata 5")
 )
 
+val ORGANIZATION_TO_BE_PATCHED = OrganizationDBO(
+    id = ObjectId(),
+    organizationId = "111222333",
+    dataProtectionOfficer = ContactDetails(name = "Data Protector", email = "data@protection.com",
+        phone = "11223344", address = "Offisergata 5"),
+    dataControllerRepresentative = null,
+    dataControllerRepresentativeInEU = ContactDetails(name = "Data EU Controller", email = "data@controller.eu",
+        phone = "99887766", address = "Europagata 5")
+)
+
+val ORGANIZATION_PATCH = Organization(
+    id = null,
+    dataControllerRepresentative = ContactDetails(name = "Data Controller", email = "data@controller.com",
+        phone = "55667788", address = "Representantgata 5"), null, null
+)
+
 fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2, RECORD_TO_BE_DELETED)
     .map { it.mapDBO() }
 
-fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0).map { it.mapDBO() }
+fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0, ORGANIZATION_TO_BE_PATCHED).map { it.mapDBO() }
 
 private fun RecordDBO.mapDBO(): org.bson.Document =
     org.bson.Document()
@@ -136,3 +152,13 @@ private fun OrganizationDBO.mapDBO(): org.bson.Document =
     org.bson.Document()
         .append("_id", id)
         .append("organizationId", organizationId)
+        .append("dataControllerRepresentative", dataControllerRepresentative?.mapDBO())
+        .append("dataControllerRepresentativeInEU", dataControllerRepresentativeInEU?.mapDBO())
+        .append("dataProtectionOfficer", dataProtectionOfficer?.mapDBO())
+
+private fun ContactDetails.mapDBO(): org.bson.Document =
+    org.bson.Document()
+        .append("name", name)
+        .append("email", email)
+        .append("phone", phone)
+        .append("address", address)

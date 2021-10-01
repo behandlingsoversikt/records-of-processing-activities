@@ -43,4 +43,10 @@ class RecordsService(
     fun createRepresentatives(representatives: Organization, organizationId: String): OrganizationDBO =
         organizationRepository.save(representatives.mapForCreate(organizationId))
 
+    fun patchRepresentatives(representatives: Organization, organizationId: String): Organization? =
+        organizationRepository.getByOrganizationId(organizationId)
+            ?.patchValues(representatives)
+            ?.let{ organizationRepository.save(it) }
+            ?.toDTO()
+
 }

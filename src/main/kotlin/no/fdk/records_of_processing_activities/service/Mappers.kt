@@ -12,6 +12,16 @@ fun OrganizationDBO.toDTO(): Organization =
         dataProtectionOfficer
     )
 
+fun OrganizationDBO.patchValues(newValues: Organization): OrganizationDBO =
+    copy(
+        dataControllerRepresentative = newValues.dataControllerRepresentative
+            ?: dataControllerRepresentative,
+        dataControllerRepresentativeInEU = newValues.dataControllerRepresentativeInEU
+            ?: dataControllerRepresentativeInEU,
+        dataProtectionOfficer = newValues.dataProtectionOfficer
+            ?: dataProtectionOfficer
+    )
+
 fun Organization.mapForCreate(currentOrganizationId: String): OrganizationDBO =
     OrganizationDBO(
         id = ObjectId(),
