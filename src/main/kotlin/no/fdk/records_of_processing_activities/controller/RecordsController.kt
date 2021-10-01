@@ -63,4 +63,16 @@ class RecordsController(
                     ) }
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
+    @DeleteMapping(path = ["/{recordId}"])
+    fun deleteRecord(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable organizationId: String,
+        @PathVariable recordId: String
+    ): ResponseEntity<Unit> =
+        if (permissions.hasOrgWritePermission(jwt, organizationId)) {
+            logger.info("deleting record $recordId for $organizationId")
+            service.deleteRecord(recordId, organizationId)
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } else ResponseEntity(HttpStatus.FORBIDDEN)
+
 }
