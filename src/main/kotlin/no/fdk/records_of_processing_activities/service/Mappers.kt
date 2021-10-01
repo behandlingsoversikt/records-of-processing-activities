@@ -12,6 +12,15 @@ fun OrganizationDBO.toDTO(): Organization =
         dataProtectionOfficer
     )
 
+fun Organization.mapForCreate(currentOrganizationId: String): OrganizationDBO =
+    OrganizationDBO(
+        id = ObjectId(),
+        organizationId = currentOrganizationId,
+        dataControllerRepresentative,
+        dataControllerRepresentativeInEU,
+        dataProtectionOfficer
+    )
+
 fun RecordDBO.toDTO(): RecordDTO =
     RecordDTO(
         id = recordId,
