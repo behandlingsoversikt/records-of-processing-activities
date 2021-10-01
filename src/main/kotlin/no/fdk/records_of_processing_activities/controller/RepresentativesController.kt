@@ -36,7 +36,7 @@ class RepresentativesController(
     }
 
     @PostMapping
-    fun createRecord(
+    fun createRepresentatives(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable organizationId: String,
         @RequestBody representatives: Organization
@@ -50,6 +50,18 @@ class RepresentativesController(
                         HttpStatus.CREATED
                     )
                 }
+        } else ResponseEntity(HttpStatus.FORBIDDEN)
+
+    @PatchMapping
+    fun patchRepresentatives(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable organizationId: String,
+        @RequestBody representatives: Organization
+    ): ResponseEntity<Organization> =
+        if (permissions.hasOrgWritePermission(jwt, organizationId)) {
+            service.patchRepresentatives(representatives, organizationId)
+                ?.let{ ResponseEntity(it, HttpStatus.OK) }
+                ?: ResponseEntity(HttpStatus.NOT_FOUND)
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
 }
