@@ -4,7 +4,9 @@ import no.fdk.records_of_processing_activities.model.*
 import no.fdk.records_of_processing_activities.repository.OrganizationRepository
 import no.fdk.records_of_processing_activities.repository.RecordRepository
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class RecordsService(
@@ -26,6 +28,11 @@ class RecordsService(
 
     fun getRecordById(recordId: String, organizationId: String): RecordDTO? =
         recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)?.toDTO()
+
+    fun deleteRecord(recordId: String, organizationId: String): Unit =
+        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)
+            ?.run { recordRepository.delete(this) }
+            ?: run { throw ResponseStatusException(HttpStatus.NOT_FOUND) }
 
     fun createRecord(record: RecordDTO, organizationId: String): RecordDBO =
         recordRepository.save(record.mapForCreate(organizationId))

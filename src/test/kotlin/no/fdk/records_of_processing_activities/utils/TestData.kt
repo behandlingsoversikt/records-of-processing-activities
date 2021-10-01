@@ -88,6 +88,17 @@ val RECORD_TO_BE_CREATED = RecordDTO(
     null, null, null,
 )
 
+val RECORD_TO_BE_DELETED = RecordDBO(
+    id = ObjectId(),
+    recordId = "tobedeleted",
+    status = RecordStatus.DRAFT,
+    organizationId = "111111111",
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null, null, null,
+    null, null, null,
+)
+
 val ORGANIZATION_DBO_0 = OrganizationDBO(
     id = ObjectId(),
     organizationId = "123456789",
@@ -109,7 +120,7 @@ val ORGANIZATION_TO_BE_CREATED = Organization(
         phone = "99887766", address = "Europagata 5")
 )
 
-fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2)
+fun recordDbPopulation() = listOf(RECORD_DBO_0, RECORD_DBO_1, RECORD_DBO_2, RECORD_TO_BE_DELETED)
     .map { it.mapDBO() }
 
 fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0).map { it.mapDBO() }
