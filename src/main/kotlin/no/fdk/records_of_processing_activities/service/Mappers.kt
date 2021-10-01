@@ -77,7 +77,7 @@ fun RecordDBO.patchValues(patch: RecordDTO): RecordDBO =
         privacyProcessingSystems = patch.privacyProcessingSystems,
         recipientCategories = patch.recipientCategories,
         dataTransfers = patch.dataTransfers,
-        updatedAt = patch.updatedAt
+        updatedAt = LocalDate.now()
     )
 
 fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
@@ -103,5 +103,5 @@ fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
         privacyProcessingSystems,
         recipientCategories,
         dataTransfers,
-        updatedAt
+        updatedAt = LocalDate.now()
     )

@@ -70,9 +70,13 @@ class PatchRecord : ApiTestContext() {
             token = JwtToken(Access.ORG_WRITE).toString(), body = mapper.writeValueAsString(RECORD_PATCH))
         assertEquals(HttpStatus.CREATED.value(), rsp["status"])
 
-        val expected = RECORD_PATCH.copy(id = RECORD_TO_BE_PATCHED.recordId, organizationId = RECORD_TO_BE_PATCHED.organizationId)
-
         val body: RecordDTO = mapper.readValue(rsp["body"] as String)
+
+        val expected = RECORD_PATCH.copy(
+            id = RECORD_TO_BE_PATCHED.recordId,
+            organizationId = RECORD_TO_BE_PATCHED.organizationId,
+            updatedAt = body.updatedAt
+        )
 
         assertEquals(expected, body)
     }
