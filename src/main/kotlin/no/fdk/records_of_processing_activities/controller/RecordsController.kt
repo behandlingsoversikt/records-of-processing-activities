@@ -55,7 +55,7 @@ class RecordsController(
     ): ResponseEntity<Unit> =
         if (permissions.hasOrgWritePermission(jwt, organizationId)) {
             logger.info("creating record for $organizationId")
-            service.createRecord(record, organizationId).recordId
+            service.createRecord(record, organizationId).id
                 .let{
                     ResponseEntity(
                         locationHeaderForCreated(location = "/api/organizations/$organizationId/records/$it"),

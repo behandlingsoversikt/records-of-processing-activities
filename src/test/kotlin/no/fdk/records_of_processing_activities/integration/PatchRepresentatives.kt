@@ -2,11 +2,9 @@ package no.fdk.records_of_processing_activities.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.fdk.records_of_processing_activities.model.RepresentativesDTO
 import no.fdk.records_of_processing_activities.utils.jwk.Access
 import no.fdk.records_of_processing_activities.utils.jwk.JwtToken
-import no.fdk.records_of_processing_activities.model.Organization
-import no.fdk.records_of_processing_activities.model.RecordDTO
-import no.fdk.records_of_processing_activities.model.RecordStatus
 import no.fdk.records_of_processing_activities.service.toDTO
 import no.fdk.records_of_processing_activities.utils.*
 import org.junit.jupiter.api.Tag
@@ -59,20 +57,20 @@ class PatchRepresentatives : ApiTestContext() {
             port, "/api/organizations/111222333/representatives", HttpMethod.GET,
             token = JwtToken(Access.ORG_WRITE).toString())
 
-        val bodyBefore: Organization = mapper.readValue(rspBefore["body"] as String)
+        val bodyBefore: RepresentativesDTO = mapper.readValue(rspBefore["body"] as String)
         assertEquals(ORGANIZATION_TO_BE_PATCHED.toDTO(), bodyBefore)
 
         val rsp = authorizedRequest(port, "/api/organizations/111222333/representatives", HttpMethod.PATCH,
             token = JwtToken(Access.ORG_WRITE).toString(), body = mapper.writeValueAsString(ORGANIZATION_PATCH))
         assertEquals(HttpStatus.OK.value(), rsp["status"])
 
-        val expected = Organization(
-            id = ORGANIZATION_TO_BE_PATCHED.organizationId,
+        val expected = RepresentativesDTO(
+            id = ORGANIZATION_TO_BE_PATCHED.id,
             dataControllerRepresentative = ORGANIZATION_PATCH.dataControllerRepresentative,
             dataControllerRepresentativeInEU = ORGANIZATION_TO_BE_PATCHED.dataControllerRepresentativeInEU,
             dataProtectionOfficer = ORGANIZATION_TO_BE_PATCHED.dataProtectionOfficer)
 
-        val body: Organization = mapper.readValue(rsp["body"] as String)
+        val body: RepresentativesDTO = mapper.readValue(rsp["body"] as String)
 
         assertEquals(expected, body)
     }

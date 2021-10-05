@@ -22,7 +22,7 @@ class DeleteRecord : ApiTestContext() {
 
     @Test
     fun `Unauthorized when not logged in`() {
-        val rsp = authorizedRequest(port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.DELETE)
+        val rsp = authorizedRequest(port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.DELETE)
 
         assertEquals(HttpStatus.UNAUTHORIZED.value(), rsp["status"])
     }
@@ -30,7 +30,7 @@ class DeleteRecord : ApiTestContext() {
     @Test
     fun `Forbidden for wrong org access`() {
         val rsp = authorizedRequest(
-            port, "/api/organizations/123/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.DELETE,
+            port, "/api/organizations/123/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.DELETE,
             token = JwtToken(Access.ORG_WRITE).toString())
 
         assertEquals(HttpStatus.FORBIDDEN.value(), rsp["status"])
@@ -39,7 +39,7 @@ class DeleteRecord : ApiTestContext() {
     @Test
     fun `Not found response when record is not in given organization`() {
         val rsp = authorizedRequest(
-            port, "/api/organizations/111111111/records/${RECORD_DBO_0.recordId}", HttpMethod.DELETE,
+            port, "/api/organizations/111111111/records/${RECORD_DBO_0.id}", HttpMethod.DELETE,
             token = JwtToken(Access.ORG_WRITE).toString())
 
         assertEquals(HttpStatus.NOT_FOUND.value(), rsp["status"])
@@ -48,7 +48,7 @@ class DeleteRecord : ApiTestContext() {
     @Test
     fun `Forbidden for read access`() {
         val rsp = authorizedRequest(
-            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.DELETE,
+            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.DELETE,
             token = JwtToken(Access.ORG_READ).toString())
 
         assertEquals(HttpStatus.FORBIDDEN.value(), rsp["status"])
@@ -57,19 +57,19 @@ class DeleteRecord : ApiTestContext() {
     @Test
     fun `Deletes record for write access`() {
         val rspBefore = authorizedRequest(
-            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.GET,
+            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.GET,
             token = JwtToken(Access.ORG_WRITE).toString())
 
         assertEquals(HttpStatus.OK.value(), rspBefore["status"])
 
         val rsp = authorizedRequest(
-            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.DELETE,
+            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.DELETE,
             token = JwtToken(Access.ORG_WRITE).toString())
 
         assertEquals(HttpStatus.NO_CONTENT.value(), rsp["status"])
 
         val rspAfter = authorizedRequest(
-            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.recordId}", HttpMethod.GET,
+            port, "/api/organizations/111111111/records/${RECORD_TO_BE_DELETED.id}", HttpMethod.GET,
             token = JwtToken(Access.ORG_WRITE).toString())
 
         assertEquals(HttpStatus.NOT_FOUND.value(), rspAfter["status"])

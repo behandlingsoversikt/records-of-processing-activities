@@ -4,6 +4,7 @@ import no.fdk.records_of_processing_activities.model.*
 import no.fdk.records_of_processing_activities.repository.OrganizationRepository
 import no.fdk.records_of_processing_activities.repository.RecordRepository
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -27,10 +28,10 @@ class RecordsService(
         }
 
     fun getRecordById(recordId: String, organizationId: String): RecordDTO? =
-        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)?.toDTO()
+        recordRepository.getByIdAndOrganizationId(recordId, organizationId)?.toDTO()
 
     fun deleteRecord(recordId: String, organizationId: String): Unit =
-        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)
+        recordRepository.getByIdAndOrganizationId(recordId, organizationId)
             ?.run { recordRepository.delete(this) }
             ?: run { throw ResponseStatusException(HttpStatus.NOT_FOUND) }
 
@@ -38,18 +39,18 @@ class RecordsService(
         recordRepository.save(record.mapForCreate(organizationId))
 
     fun patchRecord(recordId: String, organizationId: String, patch: RecordDTO): RecordDTO? =
-        recordRepository.getByRecordIdAndOrganizationId(recordId, organizationId)
+        recordRepository.getByIdAndOrganizationId(recordId, organizationId)
             ?.let { recordRepository.save(it.patchValues(patch)) }
             ?.toDTO()
 
-    fun getRepresentatives(organizationId: String): Organization? =
-        organizationRepository.getByOrganizationId(organizationId)?.toDTO()
+    fun getRepresentatives(organizationId: String): RepresentativesDTO? =
+        organizationRepository.findByIdOrNull(organizationId)?.toDTO()
 
-    fun createRepresentatives(representatives: Organization, organizationId: String): OrganizationDBO =
+    fun createRepresentatives(representatives: RepresentativesDTO, organizationId: String): RepresentativesDBO =
         organizationRepository.save(representatives.mapForCreate(organizationId))
 
-    fun patchRepresentatives(representatives: Organization, organizationId: String): Organization? =
-        organizationRepository.getByOrganizationId(organizationId)
+    fun patchRepresentatives(representatives: RepresentativesDTO, organizationId: String): RepresentativesDTO? =
+        organizationRepository.findByIdOrNull(organizationId)
             ?.patchValues(representatives)
             ?.let{ organizationRepository.save(it) }
             ?.toDTO()

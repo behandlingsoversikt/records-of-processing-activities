@@ -2,8 +2,6 @@ package no.fdk.records_of_processing_activities.utils
 
 import com.google.common.collect.ImmutableMap
 import no.fdk.records_of_processing_activities.model.*
-import org.bson.types.ObjectId
-import java.time.LocalDate
 
 const val LOCAL_SERVER_PORT = 5000
 const val WIREMOCK_TEST_URI = "http://localhost:$LOCAL_SERVER_PORT"
@@ -11,7 +9,7 @@ const val WIREMOCK_TEST_URI = "http://localhost:$LOCAL_SERVER_PORT"
 const val MONGO_USER = "testuser"
 const val MONGO_PASSWORD = "testpassword"
 const val MONGO_PORT = 27017
-const val MONGO_DB_NAME = "records-of-processing-activities"
+const val MONGO_DB_NAME = "recordsDB"
 
 val MONGO_ENV_VALUES: Map<String, String> = ImmutableMap.of(
     "MONGO_INITDB_ROOT_USERNAME", MONGO_USER,
@@ -19,8 +17,7 @@ val MONGO_ENV_VALUES: Map<String, String> = ImmutableMap.of(
 )
 
 val RECORD_DBO_0 = RecordDBO(
-    id = ObjectId(),
-    recordId = "record0",
+    id = "record0",
     status = RecordStatus.APPROVED,
     organizationId = "123456789",
     null, null, null, null, null,
@@ -40,8 +37,7 @@ val RECORD_DTO_0 = RecordDTO(
 )
 
 val RECORD_DBO_1 = RecordDBO(
-    id = ObjectId(),
-    recordId = "record1",
+    id = "record1",
     status = RecordStatus.DRAFT,
     organizationId = "123456789",
     null, null, null, null, null,
@@ -61,8 +57,7 @@ val RECORD_DTO_1 = RecordDTO(
 )
 
 val RECORD_DBO_2 = RecordDBO(
-    id = ObjectId(),
-    recordId = "record2",
+    id = "record2",
     status = RecordStatus.DRAFT,
     organizationId = "987654321",
     null, null, null, null, null,
@@ -90,8 +85,7 @@ val RECORD_TO_BE_CREATED = RecordDTO(
 )
 
 val RECORD_TO_BE_DELETED = RecordDBO(
-    id = ObjectId(),
-    recordId = "tobedeleted",
+    id = "tobedeleted",
     status = RecordStatus.DRAFT,
     organizationId = "111111111",
     null, null, null, null, null,
@@ -101,8 +95,7 @@ val RECORD_TO_BE_DELETED = RecordDBO(
 )
 
 val RECORD_TO_BE_PATCHED = RecordDBO(
-    id = ObjectId(),
-    recordId = "tobepatched",
+    id = "tobepatched",
     status = RecordStatus.DRAFT,
     organizationId = "111222333",
     null, null, null, null, null,
@@ -156,18 +149,17 @@ val RECORD_PATCH = RecordDTO(
     updatedAt = null
 )
 
-val ORGANIZATION_DBO_0 = OrganizationDBO(
-    id = ObjectId(),
-    organizationId = "123456789",
-    null, null, null
-)
-
-val ORGANIZATION_DTO_0 = Organization(
+val ORGANIZATION_DBO_0 = RepresentativesDBO(
     id = "123456789",
     null, null, null
 )
 
-val ORGANIZATION_TO_BE_CREATED = Organization(
+val ORGANIZATION_DTO_0 = RepresentativesDTO(
+    id = "123456789",
+    null, null, null
+)
+
+val ORGANIZATION_TO_BE_CREATED = RepresentativesDTO(
     id = null,
     dataProtectionOfficer = ContactDetails(name = "Data Protector", email = "data@protection.com",
         phone = "11223344", address = "Offisergata 5"),
@@ -177,9 +169,8 @@ val ORGANIZATION_TO_BE_CREATED = Organization(
         phone = "99887766", address = "Europagata 5")
 )
 
-val ORGANIZATION_TO_BE_PATCHED = OrganizationDBO(
-    id = ObjectId(),
-    organizationId = "111222333",
+val ORGANIZATION_TO_BE_PATCHED = RepresentativesDBO(
+    id = "111222333",
     dataProtectionOfficer = ContactDetails(name = "Data Protector", email = "data@protection.com",
         phone = "11223344", address = "Offisergata 5"),
     dataControllerRepresentative = null,
@@ -187,7 +178,7 @@ val ORGANIZATION_TO_BE_PATCHED = OrganizationDBO(
         phone = "99887766", address = "Europagata 5")
 )
 
-val ORGANIZATION_PATCH = Organization(
+val ORGANIZATION_PATCH = RepresentativesDTO(
     id = null,
     dataControllerRepresentative = ContactDetails(name = "Data Controller", email = "data@controller.com",
         phone = "55667788", address = "Representantgata 5"), null, null
@@ -201,14 +192,12 @@ fun orgDbPopulation() = listOf(ORGANIZATION_DBO_0, ORGANIZATION_TO_BE_PATCHED).m
 private fun RecordDBO.mapDBO(): org.bson.Document =
     org.bson.Document()
         .append("_id", id)
-        .append("recordId", recordId)
         .append("organizationId", organizationId)
         .append("status", status.toString())
 
-private fun OrganizationDBO.mapDBO(): org.bson.Document =
+private fun RepresentativesDBO.mapDBO(): org.bson.Document =
     org.bson.Document()
         .append("_id", id)
-        .append("organizationId", organizationId)
         .append("dataControllerRepresentative", dataControllerRepresentative?.mapDBO())
         .append("dataControllerRepresentativeInEU", dataControllerRepresentativeInEU?.mapDBO())
         .append("dataProtectionOfficer", dataProtectionOfficer?.mapDBO())

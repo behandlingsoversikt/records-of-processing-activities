@@ -1,7 +1,6 @@
 package no.fdk.records_of_processing_activities.controller
 
-import no.fdk.records_of_processing_activities.model.Organization
-import no.fdk.records_of_processing_activities.model.RecordDTO
+import no.fdk.records_of_processing_activities.model.RepresentativesDTO
 import no.fdk.records_of_processing_activities.service.EndpointPermissions
 import no.fdk.records_of_processing_activities.service.RecordsService
 import no.fdk.records_of_processing_activities.utils.locationHeaderForCreated
@@ -26,7 +25,7 @@ class RepresentativesController(
     fun getRepresentatives(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable organizationId: String
-    ): ResponseEntity<Organization> {
+    ): ResponseEntity<RepresentativesDTO> {
         val representatives = service.getRepresentatives(organizationId)
         return when {
             !permissions.hasOrgReadPermission(jwt, organizationId) -> ResponseEntity(HttpStatus.FORBIDDEN)
@@ -39,11 +38,11 @@ class RepresentativesController(
     fun createRepresentatives(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable organizationId: String,
-        @RequestBody representatives: Organization
+        @RequestBody representatives: RepresentativesDTO
     ): ResponseEntity<Unit> =
         if (permissions.hasOrgWritePermission(jwt, organizationId)) {
             logger.info("creating representatives for $organizationId")
-            service.createRepresentatives(representatives, organizationId).organizationId
+            service.createRepresentatives(representatives, organizationId).id
                 .let{
                     ResponseEntity(
                         locationHeaderForCreated(location = "/api/organizations/$it/representatives"),
@@ -56,8 +55,8 @@ class RepresentativesController(
     fun patchRepresentatives(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable organizationId: String,
-        @RequestBody representatives: Organization
-    ): ResponseEntity<Organization> =
+        @RequestBody representatives: RepresentativesDTO
+    ): ResponseEntity<RepresentativesDTO> =
         if (permissions.hasOrgWritePermission(jwt, organizationId)) {
             service.patchRepresentatives(representatives, organizationId)
                 ?.let{ ResponseEntity(it, HttpStatus.OK) }
