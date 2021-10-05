@@ -4,9 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.fdk.records_of_processing_activities.utils.jwk.Access
 import no.fdk.records_of_processing_activities.utils.jwk.JwtToken
-import no.fdk.records_of_processing_activities.model.Organization
-import no.fdk.records_of_processing_activities.model.RecordDTO
-import no.fdk.records_of_processing_activities.model.RecordStatus
+import no.fdk.records_of_processing_activities.model.RepresentativesDTO
 import no.fdk.records_of_processing_activities.utils.*
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -64,7 +62,7 @@ class CreateRepresentatives : ApiTestContext() {
 
         val expected = ORGANIZATION_TO_BE_CREATED.copy(id = "111111111")
 
-        val body: Organization = mapper.readValue(rspAfter["body"] as String)
+        val body: RepresentativesDTO = mapper.readValue(rspAfter["body"] as String)
 
         assertEquals(expected, body)
     }

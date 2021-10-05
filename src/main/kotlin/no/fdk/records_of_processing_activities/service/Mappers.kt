@@ -1,19 +1,18 @@
 package no.fdk.records_of_processing_activities.service
 
 import no.fdk.records_of_processing_activities.model.*
-import org.bson.types.ObjectId
 import java.time.LocalDate
 import java.util.*
 
-fun OrganizationDBO.toDTO(): Organization =
-    Organization(
-        id = organizationId,
+fun RepresentativesDBO.toDTO(): RepresentativesDTO =
+    RepresentativesDTO(
+        id,
         dataControllerRepresentative,
         dataControllerRepresentativeInEU,
         dataProtectionOfficer
     )
 
-fun OrganizationDBO.patchValues(newValues: Organization): OrganizationDBO =
+fun RepresentativesDBO.patchValues(newValues: RepresentativesDTO): RepresentativesDBO =
     copy(
         dataControllerRepresentative = newValues.dataControllerRepresentative
             ?: dataControllerRepresentative,
@@ -23,10 +22,9 @@ fun OrganizationDBO.patchValues(newValues: Organization): OrganizationDBO =
             ?: dataProtectionOfficer
     )
 
-fun Organization.mapForCreate(currentOrganizationId: String): OrganizationDBO =
-    OrganizationDBO(
-        id = ObjectId(),
-        organizationId = currentOrganizationId,
+fun RepresentativesDTO.mapForCreate(organizationId: String): RepresentativesDBO =
+    RepresentativesDBO(
+        id = organizationId,
         dataControllerRepresentative,
         dataControllerRepresentativeInEU,
         dataProtectionOfficer
@@ -34,7 +32,7 @@ fun Organization.mapForCreate(currentOrganizationId: String): OrganizationDBO =
 
 fun RecordDBO.toDTO(): RecordDTO =
     RecordDTO(
-        id = recordId,
+        id,
         status,
         organizationId,
         purpose,
@@ -82,8 +80,7 @@ fun RecordDBO.patchValues(patch: RecordDTO): RecordDBO =
 
 fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
     RecordDBO(
-        id = ObjectId(),
-        recordId = UUID.randomUUID().toString(),
+        id = UUID.randomUUID().toString(),
         status = RecordStatus.DRAFT,
         organizationId = currentOrganizationId,
         purpose,

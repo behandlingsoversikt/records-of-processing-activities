@@ -1,6 +1,5 @@
 package no.fdk.records_of_processing_activities.model
 
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
@@ -8,8 +7,7 @@ import java.time.LocalDate
 @Document(collection = "records")
 data class RecordDBO(
     @Id
-    val id: ObjectId,
-    val recordId: String,
+    val id: String,
     val status: RecordStatus?,
     val organizationId: String?,
     val purpose: String?,

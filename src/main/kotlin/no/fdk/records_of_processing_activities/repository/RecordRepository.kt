@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RecordRepository : MongoRepository<RecordDBO, String> {
     fun findAllByOrganizationId(organizationId: String, pageable: Pageable): Page<RecordDBO>
-    fun getByRecordIdAndOrganizationId(recordId: String, organizationId: String): RecordDBO?
+    fun getByIdAndOrganizationId(id: String, organizationId: String): RecordDBO?
 }

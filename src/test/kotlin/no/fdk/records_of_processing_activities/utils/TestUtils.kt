@@ -101,7 +101,7 @@ fun resetDB() {
     recordsCollection.deleteMany(org.bson.Document())
     recordsCollection.insertMany(recordDbPopulation())
 
-    val orgCollection = mongoDatabase.getCollection("organizations")
+    val orgCollection = mongoDatabase.getCollection("representatives")
     orgCollection.deleteMany(org.bson.Document())
     orgCollection.insertMany(orgDbPopulation())
 
