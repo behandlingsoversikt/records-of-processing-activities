@@ -1,5 +1,7 @@
 package no.fdk.records_of_processing_activities.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
@@ -30,6 +32,8 @@ data class RecordDBO(
     val updatedAt: LocalDate?
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RecordDTO(
     val id: String?,
     val status: RecordStatus?,
