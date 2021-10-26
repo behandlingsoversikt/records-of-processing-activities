@@ -64,7 +64,7 @@ class PatchRecord : ApiTestContext() {
         val rsp = authorizedRequest(
             port, "/api/organizations/111222333/records/${RECORD_TO_BE_PATCHED.id}", HttpMethod.PATCH,
             token = JwtToken(Access.ORG_WRITE).toString(), body = mapper.writeValueAsString(RECORD_PATCH))
-        assertEquals(HttpStatus.CREATED.value(), rsp["status"])
+        assertEquals(HttpStatus.OK.value(), rsp["status"])
 
         val body: RecordDTO = mapper.readValue(rsp["body"] as String)
 
