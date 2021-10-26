@@ -72,7 +72,7 @@ class RecordsController(
     ): ResponseEntity<RecordDTO> =
         if (permissions.hasOrgWritePermission(jwt, organizationId)) {
             service.patchRecord(recordId, organizationId, record)
-                ?.let{ ResponseEntity(it, HttpStatus.CREATED) }
+                ?.let{ ResponseEntity(it, HttpStatus.OK) }
                 ?: ResponseEntity(HttpStatus.NOT_FOUND)
         } else ResponseEntity(HttpStatus.FORBIDDEN)
 
