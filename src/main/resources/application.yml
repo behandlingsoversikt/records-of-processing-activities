@@ -3,14 +3,15 @@ logging:
   level.no: ${LOG_LEVEL:DEBUG}
   level.org.springframework: WARN
   level.org.springframework.web: WARN
+  level.org.springframework.security: TRACE
   level.org.apache.jena.riot: ERROR
 server:
-  port: 8080
+  port: 8085
 spring:
   security.oauth2.resourceserver.jwt:
-    jwk-set-uri: ${SSO_HOST}/auth/realms/fdk/protocol/openid-connect/certs
-    issuer-uri: ${SSO_HOST}/auth/realms/fdk
-  data.mongodb.uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/recordsDB?authSource=admin&authMechanism=SCRAM-SHA-1
+    jwk-set-uri: ${OIDC_JWKS}
+    issuer-uri: ${OIDC_ISSUER}
+  data.mongodb.uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST:mongodb}:${MONGO_PORT:27017}/recordsDB?authSource=admin&authMechanism=SCRAM-SHA-1
 
 ---
 spring:
