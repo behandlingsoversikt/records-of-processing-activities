@@ -10,7 +10,9 @@ A service that provides functionality to register, modify, list and delete GDPR 
 ### Environment Variables
 
 ```
-export SSO_HOST
+export OIDC_ISSUER
+export MONGO_HOST
+export MONGO_PORT
 export MONGO_USERNAME
 export MONGO_PASSWORD
 ```
