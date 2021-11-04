@@ -11,6 +11,7 @@ A service that provides functionality to register, modify, list and delete GDPR 
 
 ```
 export OIDC_ISSUER
+export OIDC_JWKS
 export MONGO_HOST
 export MONGO_PORT
 export MONGO_USERNAME
