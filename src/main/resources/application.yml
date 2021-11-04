@@ -6,7 +6,7 @@ logging:
   level.org.springframework.security: TRACE
   level.org.apache.jena.riot: ERROR
 server:
-  port: 8085
+  port: 8080
 spring:
   security.oauth2.resourceserver.jwt:
     jwk-set-uri: ${OIDC_JWKS:https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk/protocol/openid-connect/certs}
