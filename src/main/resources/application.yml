@@ -9,8 +9,8 @@ server:
   port: 8085
 spring:
   security.oauth2.resourceserver.jwt:
-    jwk-set-uri: ${OIDC_JWKS}
-    issuer-uri: ${OIDC_ISSUER}
+    jwk-set-uri: ${OIDC_JWKS:https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk/protocol/openid-connect/certs}
+    issuer-uri: ${OIDC_ISSUER:https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk}
   data.mongodb.uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST:mongodb}:${MONGO_PORT:27017}/recordsDB?authSource=admin&authMechanism=SCRAM-SHA-1
 
 ---
