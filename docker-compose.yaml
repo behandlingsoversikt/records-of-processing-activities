@@ -8,7 +8,8 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - SSO_HOST=https://sso.staging.fellesdatakatalog.digdir.no
+      - OIDC_ISSUER=https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk
+      - OIDC_JWKS=https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk/protocol/openid-connect/certs
       - MONGO_USERNAME=admin
       - MONGO_PASSWORD=admin
 
