@@ -1,7 +1,7 @@
 package no.fdk.records_of_processing_activities.service
 
 import no.fdk.records_of_processing_activities.model.*
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 fun RepresentativesDBO.toDTO(): RepresentativesDTO =
@@ -75,7 +75,7 @@ fun RecordDBO.patchValues(patch: RecordDTO): RecordDBO =
         privacyProcessingSystems = patch.privacyProcessingSystems,
         recipientCategories = patch.recipientCategories,
         dataTransfers = patch.dataTransfers,
-        updatedAt = LocalDate.now()
+        updatedAt = LocalDateTime.now()
     )
 
 fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
@@ -100,5 +100,5 @@ fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
         privacyProcessingSystems,
         recipientCategories,
         dataTransfers,
-        updatedAt = LocalDate.now()
+        updatedAt = LocalDateTime.now()
     )
