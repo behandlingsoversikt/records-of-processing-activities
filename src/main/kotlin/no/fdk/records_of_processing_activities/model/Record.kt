@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Document(collection = "records")
 data class RecordDBO(
@@ -29,7 +29,7 @@ data class RecordDBO(
     val privacyProcessingSystems: String?,
     val recipientCategories: ArrayList<String>?,
     val dataTransfers: DataTransfers?,
-    val updatedAt: LocalDate?
+    val updatedAt: LocalDateTime?
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -55,7 +55,7 @@ data class RecordDTO(
     val privacyProcessingSystems: String?,
     val recipientCategories: ArrayList<String>?,
     val dataTransfers: DataTransfers?,
-    val updatedAt: LocalDate?
+    val updatedAt: LocalDateTime?
 )
 
 data class PagedRecords(
