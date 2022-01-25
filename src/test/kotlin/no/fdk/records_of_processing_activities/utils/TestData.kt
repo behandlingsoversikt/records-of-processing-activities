@@ -120,6 +120,7 @@ val RECORD_PATCH = RecordDTO(
         personalDataCategories = arrayListOf("Identifikasjonsopplysninger","Helseopplysninger"),
         dataSubjectCategories = "Ansatte")),
     commonDataControllerContact = CommonDataControllerContact(
+        commonDataControllerChecked = true,
         companies = "testvirksomhet",
         distributionOfResponsibilities = "Ansvarsfordeling",
         contactPoints = arrayListOf(ContactPoint(

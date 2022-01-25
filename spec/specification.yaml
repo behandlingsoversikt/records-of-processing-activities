@@ -358,6 +358,8 @@ components:
           type: object
           description: Dersom to eller flere behandlingsansvarlige i fellesskap fastsetter formålene med og midlene for behandlingen, skal de være felles behandlingsansvarlige, jfr. Artikkel 26 nr 1.
           properties:
+            commonDataControllerChecked:
+              type: boolean
             companies:
               type: string
             distributionOfResponsibilities:
