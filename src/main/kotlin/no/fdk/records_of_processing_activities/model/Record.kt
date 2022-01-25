@@ -97,6 +97,7 @@ data class DataProcessingAgreement(
 )
 
 data class CommonDataControllerContact(
+    val commonDataControllerChecked: Boolean?,
     val companies: String?,
     val distributionOfResponsibilities: String?,
     val contactPoints: ArrayList<ContactPoint>?
