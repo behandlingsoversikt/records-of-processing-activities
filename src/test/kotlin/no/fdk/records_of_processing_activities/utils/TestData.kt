@@ -131,7 +131,7 @@ val RECORD_PATCH = RecordDTO(
     purpose = "Formål",
     articleSixBasis = arrayListOf(ArticleSix(legality = "6.1.e",referenceUrl = "https://legalreference.no")),
     otherArticles = OtherArticles(
-        articleNine = Article(checked = false,referenceUrl = ""),
+        articleNine = ArticleWithLegalities(checked = false, referenceUrl = "", legalities = arrayListOf(ArticleLegality(legality = "9.1", checked = true, referenceUrl = "https://legalreference.no"))),
         articleTen = Article(checked = true, referenceUrl = "Annen lovgivning")),
     businessAreas = arrayListOf("område"),
     relatedDatasets = arrayListOf("1c941ffb-1849-44a6-ba06-ce6b1ddacc60"),
