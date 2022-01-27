@@ -86,8 +86,20 @@ data class ArticleSix(
     val referenceUrl: String?
 )
 
+data class ArticleLegality(
+    val legality: String?,
+    val checked: Boolean?,
+    val referenceUrl: String?
+)
+
+data class ArticleWithLegalities(
+    val checked: Boolean?,
+    val referenceUrl: String?,
+    val legalities: ArrayList<ArticleLegality>?
+)
+
 data class OtherArticles(
-    val articleNine: Article?,
+    val articleNine: ArticleWithLegalities?,
     val articleTen: Article?
 )
 

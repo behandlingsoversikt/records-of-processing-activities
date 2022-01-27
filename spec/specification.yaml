@@ -263,6 +263,26 @@ components:
           type: boolean
         referenceUrl:
           type: string
+    ArticleWithLegalities:
+      type: object
+      properties:
+        checked:
+          type: boolean
+        referenceUrl:
+          type: string
+        legalities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Legality"
+    Legality:
+      type: object
+      properties:
+        legality:
+          type: string
+        checked:
+          type: boolean
+        referenceUrl:
+          type: string
     Representative:
       allOf:
         - $ref: "#/components/schemas/ContactPoint"
@@ -357,7 +377,7 @@ components:
           description: Det må foreligge et særskilt grunnlag i tillegg til behandlingsgrunnlag for å behandle denne typen opplysninger. Skriv inn henvisning også til annen lovgivning, dersom relevant
           properties:
             articleNine:
-              $ref: "#/components/schemas/Article"
+              $ref: "#/components/schemas/ArticleWithLegalities"
             articleTen:
               $ref: "#/components/schemas/Article"
         businessAreas:
