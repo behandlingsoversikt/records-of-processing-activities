@@ -55,4 +55,10 @@ class RecordsService(
             ?.let{ organizationRepository.save(it) }
             ?.toDTO()
 
+    fun allRecordCounts(): List<RecordCount> =
+        countOrganizationRecords(recordRepository.findAll())
+
+    fun recordCountForOrganizations(organizations: Set<String>): List<RecordCount> =
+        countOrganizationRecords(recordRepository.findByOrganizationIdIn(organizations))
+
 }

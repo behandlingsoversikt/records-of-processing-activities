@@ -102,3 +102,12 @@ fun RecordDTO.mapForCreate(currentOrganizationId: String): RecordDBO =
         dataTransfers,
         updatedAt = LocalDateTime.now()
     )
+
+fun countOrganizationRecords(records: List<RecordDBO>): List<RecordCount> {
+    val counts: MutableMap<String, Int> = mutableMapOf()
+    records.forEach{ it.organizationId?.run {
+        counts[this] = counts.getOrDefault(this, 0) + 1 }
+    }
+
+    return counts.map { RecordCount(organizationId = it.key, recordCount = it.value) }
+}
