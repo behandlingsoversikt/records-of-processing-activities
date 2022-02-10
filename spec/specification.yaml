@@ -20,6 +20,19 @@ tags:
 servers:
   - url: 'https://records-of-processing-activities.fellesdatakatalog.digdir.no'
 paths:
+  /api/organizations:
+    get:
+      tags:
+        - organization
+      summary: Gets record count for permitted organizations
+      operationId: getRecordCounts
+      responses:
+        '200':
+          description: Returns record count for all permitted organizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordCount'
   /api/organizations/{organizationId}/representatives:
     get:
       tags:
@@ -225,6 +238,14 @@ paths:
           description: No Content
 components:
   schemas:
+    RecordCount:
+      description: Record count for organization
+      type: object
+      properties:
+        organizationId:
+          type: string
+        recordCount:
+          type: integer
     ContactPoint:
       description: Basic contact information
       type: object
