@@ -3,7 +3,7 @@ A service that provides functionality to register, modify, list and delete GDPR 
 
 ## Requirements
 - maven
-- java 15
+- java 17
 - docker
 - docker-compose
 
