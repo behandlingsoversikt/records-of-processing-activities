@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:18-slim
 
 ENV TZ=Europe/Oslo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
