@@ -27,7 +27,7 @@
         <!--end standard properties-->
 
         <kotlin.version>1.7.20</kotlin.version>
-        <testcontainers.version>1.17.5</testcontainers.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
 
     </properties>
 
