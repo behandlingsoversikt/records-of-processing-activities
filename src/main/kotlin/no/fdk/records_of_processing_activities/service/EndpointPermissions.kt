@@ -1,5 +1,6 @@
 package no.fdk.records_of_processing_activities.service
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
 
@@ -9,7 +10,7 @@ private fun roleOrgWrite(orgnr: String) = "organization:$orgnr:write"
 private fun roleOrgRead(orgnr: String) = "organization:$orgnr:read"
 
 @Component
-class EndpointPermissions {
+class EndpointPermissions(@Value("\${application.security.allowedOrgs}") private val allowedOrgs: Array<String>) {
 
     fun permittedOrganizations(jwt: Jwt): Set<String> {
         val authorities: String? = jwt.claims["authorities"] as? String
@@ -28,6 +29,8 @@ class EndpointPermissions {
         return when {
             organizationId == null -> false
             authorities == null -> false
+            hasSysAdminPermission(jwt) -> true
+            !allowedOrgs.contains(organizationId) -> false
             hasOrgWritePermission(jwt, organizationId) -> true
             authorities.contains(roleOrgRead(organizationId)) -> true
             else -> false
@@ -40,6 +43,7 @@ class EndpointPermissions {
             organizationId == null -> false
             authorities == null -> false
             hasSysAdminPermission(jwt) -> true
+            !allowedOrgs.contains(organizationId) -> false
             authorities.contains(roleOrgAdmin(organizationId)) -> true
             authorities.contains(roleOrgWrite(organizationId)) -> true
             else -> false
