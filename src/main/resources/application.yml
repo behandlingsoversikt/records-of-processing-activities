@@ -13,6 +13,7 @@ spring:
     issuer-uri: ${OIDC_ISSUER:https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk}
   data.mongodb.uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST:mongodb}:${MONGO_PORT:27017}/recordsDB?authSource=admin&authMechanism=SCRAM-SHA-1
 application.cors.originPatterns: "${CORS_ORIGIN_PATTERNS}"
+application.security.allowedOrgs: "${ALLOW_LIST}"
 
 ---
 spring:
@@ -22,6 +23,7 @@ spring:
     issuer-uri: https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk
   data.mongodb.uri: mongodb://admin:admin@localhost:27017/recordsDB?authSource=admin&authMechanism=SCRAM-SHA-1
 application.cors.originPatterns: "*"
+application.security.allowedOrgs: "123456789,987654321,111111111,111222333"
 
 ---
 spring:
@@ -30,3 +32,4 @@ spring:
     jwk-set-uri: http://localhost:5050/auth/realms/fdk/protocol/openid-connect/certs
     issuer-uri: http://localhost:5050/auth/realms/fdk
 application.cors.originPatterns: "*"
+application.security.allowedOrgs: "123456789,987654321,111111111,111222333"
