@@ -13,7 +13,7 @@ jobs:
     uses: Informasjonsforvaltning/workflows/.github/workflows/build-deploy-maven.yaml@main
     with:
       app_name: records-of-processing-activities
-      java_version: '17'
+      java_version: '21'
       coverage_file_path: ./target/site/jacoco/jacoco.xml
       environment: staging
       cluster: digdir-fdk-dev
@@ -27,4 +27,4 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
     uses: Informasjonsforvaltning/workflows/.github/workflows/build.yaml@main
     with:
-      java_version: '17'
+      java_version: '21'
